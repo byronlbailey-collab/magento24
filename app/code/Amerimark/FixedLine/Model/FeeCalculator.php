@@ -84,18 +84,31 @@ class FeeCalculator
             if (!$option || !$selection) {
                 continue;
             }
-            if ($option->getGroupByType() === Option::OPTION_GROUP_SELECT) {
-                foreach (explode(',', (string)$selection->getValue()) as $valueId) {
-                    $value = $option->getValueById($valueId);
-                    if ($value && PriceType::isFixedLine($value->getPriceType())) {
-                        $sum += (float)$value->getData('price');
-                    }
-                }
-            } elseif (PriceType::isFixedLine($option->getPriceType())) {
-                $sum += (float)$option->getData('price');
-            }
+            $sum += $this->getOptionFee($option, (string)$selection->getValue());
         }
         return $sum;
+    }
+
+    /**
+     * Raw FixedLine fee (base currency, unrounded) of one selected option.
+     *
+     * @param Option $option
+     * @param string $selection the cart selection: text/date value, or comma separated option type ids
+     * @return float
+     */
+    public function getOptionFee(Option $option, string $selection): float
+    {
+        if ($option->getGroupByType() !== Option::OPTION_GROUP_SELECT) {
+            return PriceType::isFixedLine($option->getPriceType()) ? (float)$option->getData('price') : 0.0;
+        }
+        $fee = 0.0;
+        foreach (explode(',', $selection) as $valueId) {
+            $value = $option->getValueById($valueId);
+            if ($value && PriceType::isFixedLine($value->getPriceType())) {
+                $fee += (float)$value->getData('price');
+            }
+        }
+        return $fee;
     }
 
     /**
