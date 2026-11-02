@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Amerimark\ImageOption\ImageUpload" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">amerimark/imageoption/tmp</argument>
+            <argument name="basePath" xsi:type="string">amerimark/imageoption</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amerimark\ImageOption\Controller\Adminhtml\Group\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Amerimark\ImageOption\ImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\ImageOption\Controller\Adminhtml\Group\Save">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Amerimark\ImageOption\ImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="amerimark_imageoption_group_listing_data_source" xsi:type="string">Amerimark\ImageOption\Model\ResourceModel\Group\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\ImageOption\Model\ResourceModel\Group\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">amerimark_image_group</argument>
+            <argument name="resourceModel" xsi:type="string">Amerimark\ImageOption\Model\ResourceModel\Group</argument>
+        </arguments>
+    </type>
+</config>

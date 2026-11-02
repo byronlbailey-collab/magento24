@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Amerimark_ImageOption::groups" title="Image Option Groups" translate="title" module="Amerimark_ImageOption"
+             sortOrder="30" parent="Magento_Catalog::inventory" action="amerimark_imageoption/group/"
+             resource="Amerimark_ImageOption::groups"/>
+    </menu>
+</config>

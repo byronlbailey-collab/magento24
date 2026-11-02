@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">amerimark_imageoption_group_form.amerimark_imageoption_group_form_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back" class="Amerimark\ImageOption\Block\Adminhtml\Group\Edit\BackButton"/>
+            <button name="delete" class="Amerimark\ImageOption\Block\Adminhtml\Group\Edit\DeleteButton"/>
+            <button name="save_and_continue" class="Amerimark\ImageOption\Block\Adminhtml\Group\Edit\SaveAndContinueButton"/>
+            <button name="save" class="Amerimark\ImageOption\Block\Adminhtml\Group\Edit\SaveButton"/>
+        </buttons>
+        <namespace>amerimark_imageoption_group_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>amerimark_imageoption_group_form.amerimark_imageoption_group_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="amerimark_imageoption_group_form_data_source">
+        <settings>
+            <submitUrl path="amerimark_imageoption/group/save"/>
+        </settings>
+        <aclResource>Amerimark_ImageOption::groups</aclResource>
+        <dataProvider class="Amerimark\ImageOption\Model\Group\DataProvider" name="amerimark_imageoption_group_form_data_source">
+            <settings>
+                <requestFieldName>group_id</requestFieldName>
+                <primaryFieldName>group_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">Group</label>
+        </settings>
+        <field name="group_id" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="is_active" sortOrder="10" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Active</label>
+                <tooltip>
+                    <description translate="true">Inactive groups are hidden from shoppers: products that use them cannot be bought until the group is active again.</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="name" sortOrder="20" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Group Name</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="images">
+        <settings>
+            <label translate="true">Images</label>
+            <collapsible>false</collapsible>
+        </settings>
+        <dynamicRows name="items" component="Magento_Ui/js/dynamic-rows/dynamic-rows">
+            <settings>
+                <addButtonLabel translate="true">Add Image</addButtonLabel>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <componentType>dynamicRows</componentType>
+                <recordTemplate>record</recordTemplate>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                        <item name="componentType" xsi:type="string">container</item>
+                    </item>
+                </argument>
+                <field name="item_id" formElement="input">
+                    <settings>
+                        <dataType>text</dataType>
+                        <visible>false</visible>
+                    </settings>
+                </field>
+                <field name="image" sortOrder="10" formElement="imageUploader">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="source" xsi:type="string">amerimark_image_group</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                        <dataType>string</dataType>
+                        <label translate="true">Image</label>
+                        <required>true</required>
+                        <validation>
+                            <rule name="required-entry" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                    <formElements>
+                        <imageUploader>
+                            <settings>
+                                <required>true</required>
+                                <uploaderConfig>
+                                    <param xsi:type="url" name="url" path="amerimark_imageoption/group/upload"/>
+                                </uploaderConfig>
+                                <previewTmpl>Magento_Catalog/image-preview</previewTmpl>
+                                <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                                <maxFileSize>4194304</maxFileSize>
+                            </settings>
+                        </imageUploader>
+                    </formElements>
+                </field>
+                <field name="label" sortOrder="20" formElement="input">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Label</label>
+                        <validation>
+                            <rule name="required-entry" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                </field>
+                <field name="sku" sortOrder="30" formElement="input">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">SKU</label>
+                    </settings>
+                </field>
+                <field name="sort_order" sortOrder="40" formElement="input">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="number">0</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>number</dataType>
+                        <label translate="true">Sort Order</label>
+                        <validation>
+                            <rule name="validate-digits" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                </field>
+                <field name="is_active" sortOrder="50" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="number">1</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Active</label>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="number">0</map>
+                                    <map name="true" xsi:type="number">1</map>
+                                </valueMap>
+                                <prefer>toggle</prefer>
+                            </settings>
+                        </checkbox>
+                    </formElements>
+                </field>
+                <actionDelete sortOrder="60">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label/>
+                        <componentType>actionDelete</componentType>
+                    </settings>
+                </actionDelete>
+            </container>
+        </dynamicRows>
+    </fieldset>
+</form>
