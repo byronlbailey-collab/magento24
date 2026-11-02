@@ -1,0 +1,64 @@
+<?php
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+
+/** @var \Amerimark\ImageOption\Block\Product\View\Options\ImageGroup $block */
+/** @var \Magento\Framework\Escaper $escaper */
+$option = $block->getOption();
+$optionId = (int)$option->getId();
+$required = (bool)$option->getIsRequire();
+$items = $block->getItems();
+$uploadAllowed = $block->isUploadAllowed();
+$fileInfo = $block->getFileInfo();
+$uploadName = 'options_' . $optionId . '_file';
+?>
+<div class="field imageoption<?= $required ? ' required' : '' ?>"
+     data-role="amerimark-image-option"
+     data-mage-init="<?= $escaper->escapeHtmlAttr($block->getMageInit()) ?>">
+    <label class="label" for="options_<?= $optionId ?>_image">
+        <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
+    </label>
+    <div class="control">
+        <?php if ($items): ?>
+            <div class="imageoption-selected" data-role="selected" hidden>
+                <span class="imageoption-selected__thumb" data-role="selected-thumb"></span>
+                <span class="imageoption-selected__label" data-role="selected-label"></span>
+                <button type="button" class="action imageoption-clear" data-role="clear"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Remove selected image')) ?>">&times;</button>
+            </div>
+            <button type="button" class="action secondary imageoption-choose" data-role="open">
+                <span><?= $escaper->escapeHtml(__('Choose Image')) ?></span>
+            </button>
+        <?php else: ?>
+            <p class="imageoption-empty note"><?= $escaper->escapeHtml(__('No images are available for this option right now.')) ?></p>
+        <?php endif; ?>
+        <?php /* Visually hidden (not type=hidden) so the form validator still checks it. */ ?>
+        <input type="text" class="imageoption-value" data-role="value" tabindex="-1" aria-hidden="true" readonly
+               name="options[<?= $optionId ?>]" id="options_<?= $optionId ?>_image"
+               value="<?= (int)$block->getSelectedImageId() ?: '' ?>"
+               data-validate='{"amerimark-image-choice":true}'/>
+        <?php if ($uploadAllowed): ?>
+            <div class="imageoption-upload" data-role="upload-box">
+                <?php if ($items): ?>
+                    <span class="imageoption-or"><?= $escaper->escapeHtml(__('or upload your own logo')) ?></span>
+                <?php endif; ?>
+                <?php if ($fileInfo->hasData()): ?>
+                    <p class="note imageoption-saved" data-role="saved-upload">
+                        <?= $escaper->escapeHtml(__('Current upload')) ?>:
+                        <strong><?= $escaper->escapeHtml($fileInfo->getTitle()) ?></strong>
+                        (<?= $escaper->escapeHtml(__('choose a file below or an image above to replace it')) ?>)
+                    </p>
+                <?php endif; ?>
+                <input type="file" name="<?= $escaper->escapeHtmlAttr($uploadName) ?>" data-role="file"
+                       id="<?= $escaper->escapeHtmlAttr($uploadName) ?>"/>
+                <input type="hidden" name="<?= $escaper->escapeHtmlAttr($uploadName) ?>_action" data-role="file-action"
+                       value="<?= $fileInfo->hasData() ? 'save_old' : 'save_new' ?>"/>
+                <p class="note">
+                    <?= $escaper->escapeHtml(__('Compatible file extensions to upload')) ?>:
+                    <strong><?= $escaper->escapeHtml($block->getUploadExtensions()) ?></strong>
+                </p>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

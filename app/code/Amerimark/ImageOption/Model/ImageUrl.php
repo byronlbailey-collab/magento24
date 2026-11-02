@@ -35,6 +35,17 @@ class ImageUrl
     }
 
     /**
+     * Public URL of any media-relative path.
+     *
+     * @param string $relativePath
+     * @return string
+     */
+    public function getMediaUrl(string $relativePath): string
+    {
+        return $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . ltrim($relativePath, '/');
+    }
+
+    /**
      * Public URL of a stored image file name.
      *
      * @param string $file
@@ -42,7 +53,6 @@ class ImageUrl
      */
     public function getUrl(string $file): string
     {
-        return $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA)
-            . $this->getRelativePath($file);
+        return $this->getMediaUrl($this->getRelativePath($file));
     }
 }

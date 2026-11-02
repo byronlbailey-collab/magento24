@@ -1,0 +1,134 @@
+// Copyright Amerimark. All rights reserved.
+// Image Group option (Amerimark_ImageOption). Plain rules so they work in Luma and are easy to restyle.
+
+.imageoption {
+    .imageoption-selected {
+        align-items: center;
+        display: inline-flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        vertical-align: middle;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    .imageoption-selected__thumb {
+        background: #fff center / contain no-repeat;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        display: inline-block;
+        height: 56px;
+        width: 56px;
+    }
+
+    .imageoption-selected__label {
+        font-weight: 600;
+    }
+
+    .imageoption-clear {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 1;
+        padding: 0 6px;
+    }
+
+    // Visually hidden but still "visible" to the form validator.
+    .imageoption-value {
+        border: 0;
+        height: 1px;
+        left: 0;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0;
+        pointer-events: none;
+        position: absolute;
+        width: 1px;
+    }
+
+    .imageoption-upload {
+        margin-top: 12px;
+    }
+
+    .imageoption-or {
+        display: block;
+        margin-bottom: 6px;
+    }
+}
+
+.imageoption-modal-wrapper {
+    .imageoption-grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .imageoption-item {
+        background: #fff;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        display: block;
+        overflow: hidden;
+        padding: 6px;
+        position: relative;
+        width: 100%;
+
+        img {
+            display: block;
+            height: auto;
+            margin: 0 auto;
+            max-height: 110px;
+            max-width: 100%;
+        }
+
+        &:hover,
+        &:focus {
+            border-color: #1979c3;
+            outline: none;
+        }
+
+        &.is-selected {
+            border-color: #1979c3;
+            box-shadow: 0 0 0 2px #1979c3;
+        }
+    }
+
+    // The label is revealed on hover/focus and stays visible on the chosen image.
+    .imageoption-item__label {
+        background: rgba(0, 0, 0, .72);
+        bottom: 0;
+        color: #fff;
+        font-size: 12px;
+        left: 0;
+        line-height: 1.3;
+        opacity: 0;
+        padding: 4px 6px;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        transition: opacity .15s ease-in-out;
+    }
+
+    .imageoption-item:hover .imageoption-item__label,
+    .imageoption-item:focus .imageoption-item__label,
+    .imageoption-item.is-selected .imageoption-item__label {
+        opacity: 1;
+    }
+}
+
+.amerimark-image-option {
+    display: inline-block;
+
+    &__label {
+        vertical-align: middle;
+    }
+}

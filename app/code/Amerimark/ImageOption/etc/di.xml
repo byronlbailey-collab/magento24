@@ -71,4 +71,27 @@
         <plugin name="amerimark_imageoption_custom_options_form"
                 type="Amerimark\ImageOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
     </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="amerimark_imageoption_availability"
+                type="Amerimark\ImageOption\Plugin\Quote\QuoteImageAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\QuoteValidator">
+        <plugin name="amerimark_imageoption_submit_guard"
+                type="Amerimark\ImageOption\Plugin\Quote\QuoteImageAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Checkout\Model\Session">
+        <plugin name="amerimark_imageoption_session_quote_check"
+                type="Amerimark\ImageOption\Plugin\Checkout\SessionQuoteImageCheckPlugin"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\DefaultItem">
+        <plugin name="amerimark_imageoption_minicart_html"
+                type="Amerimark\ImageOption\Plugin\Checkout\MiniCartOptionHtmlPlugin"/>
+    </type>
+    <type name="Magento\QuoteGraphQl\Model\CartItem\DataProvider\CustomizableOptionValue\Composite">
+        <arguments>
+            <argument name="customizableOptionValues" xsi:type="array">
+                <item name="image_group" xsi:type="string">Amerimark\ImageOption\Model\GraphQl\CartImageGroupValue</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

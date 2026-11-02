@@ -1,0 +1,21 @@
+# Copyright Amerimark. All rights reserved.
+
+type CustomizableImageGroupOption implements CustomizableOptionInterface @doc(description: "Contains information about an image chooser that is defined as part of a customizable option: the shopper picks an image from a group and, when allowed, can upload their own file instead.") {
+    value: CustomizableImageGroupValue @doc(description: "An object that defines the images the shopper can choose from.")
+    product_sku: String @doc(description: "The Stock Keeping Unit of the base product.")
+}
+
+type CustomizableImageGroupValue @doc(description: "Defines the images (and the optional upload) of an image chooser option. This option type has no price.") {
+    uid: ID! @doc(description: "The unique ID for a `CustomizableImageGroupValue` object.") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\CustomizableEnteredOptionValueUid")
+    images: [CustomizableImageGroupImage] @doc(description: "The images the shopper can choose from, in display order. Empty when the group is inactive.")
+    allow_upload: Boolean @doc(description: "Indicates whether the shopper may upload their own file instead of choosing an image.")
+    upload_file_extensions: String @doc(description: "The comma separated file extensions accepted for an upload.")
+}
+
+type CustomizableImageGroupImage @doc(description: "An image a shopper can choose for an image chooser option.") {
+    uid: ID! @doc(description: "The unique ID of the image. Use it as the value of the customizable option when adding the product to the cart.")
+    label: String! @doc(description: "The image label.")
+    sku: String @doc(description: "The SKU that is appended to the line item SKU when this image is chosen.")
+    image_url: String! @doc(description: "The URL of the full size image.")
+    thumbnail_url: String! @doc(description: "The URL of a small thumbnail.")
+}
