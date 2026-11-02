@@ -9,4 +9,34 @@
         <plugin name="amerimark_fixedline_price_types"
                 type="Amerimark\FixedLine\Plugin\Catalog\Config\Source\PriceTypesPlugin"/>
     </type>
+    <type name="Magento\Catalog\Model\Product\Option\Type\DefaultType">
+        <plugin name="amerimark_fixedline_option_price"
+                type="Amerimark\FixedLine\Plugin\Catalog\Option\Type\DefaultTypePlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="amerimark_fixedline_calc_row_total"
+                type="Amerimark\FixedLine\Plugin\Quote\Item\CalcRowTotalPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address\Item">
+        <plugin name="amerimark_fixedline_calc_row_total"
+                type="Amerimark\FixedLine\Plugin\Quote\Item\CalcRowTotalPlugin"/>
+    </type>
+    <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
+        <plugin name="amerimark_fixedline_map_fee_items"
+                type="Amerimark\FixedLine\Plugin\Tax\MapFeeItemsPlugin"/>
+        <plugin name="amerimark_fixedline_update_item_fee_info"
+                type="Amerimark\FixedLine\Plugin\Tax\UpdateItemFeeInfoPlugin"/>
+    </type>
+    <type name="Magento\Tax\Api\TaxCalculationInterface">
+        <plugin name="amerimark_fixedline_merge_fee_details"
+                type="Amerimark\FixedLine\Plugin\Tax\MergeFeeDetailsPlugin"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Utility">
+        <plugin name="amerimark_fixedline_min_fix_round"
+                type="Amerimark\FixedLine\Plugin\SalesRule\MinFixRoundPlugin"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Rule\Action\Discount\BuyXGetY">
+        <plugin name="amerimark_fixedline_buyxgety_exclude_fee"
+                type="Amerimark\FixedLine\Plugin\SalesRule\BuyXGetYExcludeFeePlugin"/>
+    </type>
 </config>

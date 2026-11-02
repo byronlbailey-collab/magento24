@@ -1,0 +1,18 @@
+{
+    "quote_item": {
+        "column": {
+            "fxline_amount": true,
+            "base_fxline_amount": true,
+            "fxline_amount_incl_tax": true,
+            "base_fxline_amount_incl_tax": true
+        }
+    },
+    "quote_address_item": {
+        "column": {
+            "fxline_amount": true,
+            "base_fxline_amount": true,
+            "fxline_amount_incl_tax": true,
+            "base_fxline_amount_incl_tax": true
+        }
+    }
+}
