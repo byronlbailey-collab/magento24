@@ -32,7 +32,8 @@
     "catalog_product_option": {
         "column": {
             "image_group_id": true,
-            "image_allow_upload": true
+            "image_allow_upload": true,
+            "image_upload_ext": true
         },
         "constraint": {
             "CAT_PRD_OPT_IMAGE_GROUP_ID_AMERIMARK_IMAGE_GROUP_GROUP_ID": true

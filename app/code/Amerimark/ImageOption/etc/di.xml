@@ -46,4 +46,29 @@
             <argument name="resourceModel" xsi:type="string">Amerimark\ImageOption\Model\ResourceModel\Group</argument>
         </arguments>
     </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <arguments>
+            <argument name="optionGroups" xsi:type="array">
+                <item name="image_group" xsi:type="string">Amerimark\ImageOption\Model\Product\Option\Type\ImageGroup</item>
+            </argument>
+            <argument name="optionTypesToGroups" xsi:type="array">
+                <item name="image_group" xsi:type="string">image_group</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <plugin name="amerimark_imageoption_normalize"
+                type="Amerimark\ImageOption\Plugin\Catalog\OptionNormalizePlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Validator\Pool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="image_group" xsi:type="object">Amerimark\ImageOption\Model\Product\Option\Validator\ImageGroup</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions">
+        <plugin name="amerimark_imageoption_custom_options_form"
+                type="Amerimark\ImageOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
+    </type>
 </config>

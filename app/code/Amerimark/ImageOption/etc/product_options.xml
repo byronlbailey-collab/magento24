@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/product_options.xsd">
+    <option name="image_group" label="Image" renderer="Amerimark\ImageOption\Block\Adminhtml\Product\Edit\Tab\Options\Type\ImageGroup">
+        <inputType name="image_group" label="Image Group"/>
+    </option>
+</config>
