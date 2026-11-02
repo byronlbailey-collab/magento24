@@ -39,4 +39,12 @@
         <plugin name="amerimark_fixedline_buyxgety_exclude_fee"
                 type="Amerimark\FixedLine\Plugin\SalesRule\BuyXGetYExcludeFeePlugin"/>
     </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="amerimark_fixedline_to_order_item"
+                type="Amerimark\FixedLine\Plugin\Quote\Item\ToOrderItemPlugin"/>
+    </type>
+    <type name="Magento\Sales\Block\Order\Email\Items\DefaultItems">
+        <plugin name="amerimark_fixedline_email_item_price"
+                type="Amerimark\FixedLine\Plugin\Sales\EmailItemPricePlugin"/>
+    </type>
 </config>

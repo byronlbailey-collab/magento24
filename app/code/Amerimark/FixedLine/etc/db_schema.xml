@@ -17,4 +17,10 @@
         <column xsi:type="decimal" name="fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Incl Tax"/>
         <column xsi:type="decimal" name="base_fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Incl Tax"/>
     </table>
+    <table name="sales_order_item">
+        <column xsi:type="decimal" name="fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Incl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Incl Tax"/>
+    </table>
 </schema>
