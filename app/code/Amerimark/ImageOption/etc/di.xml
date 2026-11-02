@@ -71,6 +71,14 @@
         <plugin name="amerimark_imageoption_custom_options_form"
                 type="Amerimark\ImageOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
     </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="amerimark_imageoption_copy_uploads"
+                type="Amerimark\ImageOption\Plugin\Quote\CopyUploadsToOrderPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Type\AbstractType">
+        <plugin name="amerimark_imageoption_order_snapshot"
+                type="Amerimark\ImageOption\Plugin\Catalog\OrderOptionsSnapshotPlugin"/>
+    </type>
     <type name="Magento\Quote\Model\Quote">
         <plugin name="amerimark_imageoption_availability"
                 type="Amerimark\ImageOption\Plugin\Quote\QuoteImageAvailabilityPlugin"/>

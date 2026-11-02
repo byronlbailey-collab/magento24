@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <referenceBlock name="product.composite.fieldset.options">
+        <block class="Amerimark\ImageOption\Block\Product\View\Options\ImageGroup"
+               name="product.composite.fieldset.options.image_group" as="image_group"
+               template="Amerimark_ImageOption::catalog/product/composite/image_group.phtml"/>
+    </referenceBlock>
+</layout>

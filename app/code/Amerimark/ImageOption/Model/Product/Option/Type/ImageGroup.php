@@ -257,7 +257,12 @@ class ImageGroup extends File
     public function getCustomizedView($optionInfo)
     {
         if (isset($optionInfo['option_value']) && static::isImageValue($optionInfo['option_value'])) {
-            return $optionInfo['value'] ?? $this->renderImage((int)$optionInfo['option_value']);
+            if (isset($optionInfo['value'])) {
+                return $optionInfo['value'];
+            }
+            // groupFactory() hands out a type without its option; fall back to the snapshot label.
+            $snapshot = $optionInfo['amerimark_image']['label'] ?? null;
+            return $snapshot !== null ? $this->_escaper->escapeHtml($snapshot) : (string)__('Image no longer available');
         }
         return parent::getCustomizedView($optionInfo);
     }
