@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Model\Config\Source\Product\Options\Price">
+        <plugin name="amerimark_fixedline_price_types"
+                type="Amerimark\FixedLine\Plugin\Catalog\Config\Source\PriceTypesPlugin"/>
+    </type>
+</config>

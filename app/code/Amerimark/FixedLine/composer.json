@@ -1,0 +1,16 @@
+{
+    "name": "amerimark/module-fixed-line",
+    "description": "Adds a FixedLine price type for customizable options: a flat amount per cart line regardless of quantity.",
+    "type": "magento2-module",
+    "require": {
+        "php": "~8.3.0||~8.4.0||~8.5.0",
+        "magento/framework": "*",
+        "magento/module-catalog": "*",
+        "magento/module-quote": "*",
+        "magento/module-sales": "*"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {"Amerimark\\FixedLine\\": ""}
+    }
+}
