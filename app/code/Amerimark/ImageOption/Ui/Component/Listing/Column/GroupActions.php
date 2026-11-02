@@ -35,7 +35,10 @@ class GroupActions extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
-        foreach ($dataSource['data']['items'] ?? [] as &$item) {
+        if (!isset($dataSource['data']['items'])) {
+            return $dataSource;
+        }
+        foreach ($dataSource['data']['items'] as &$item) {
             $item[$this->getData('name')] = [
                 'edit' => [
                     'href' => $this->urlBuilder->getUrl('amerimark_imageoption/group/edit', ['group_id' => $item['group_id']]),
@@ -43,6 +46,7 @@ class GroupActions extends Column
                 ],
             ];
         }
+        unset($item);
         return $dataSource;
     }
 }
