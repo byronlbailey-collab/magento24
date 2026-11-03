@@ -1,0 +1,55 @@
+{
+    "amerimark_color_group": {
+        "column": {
+            "group_id": true,
+            "name": true,
+            "is_active": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amerimark_color_group_item": {
+        "column": {
+            "item_id": true,
+            "group_id": true,
+            "name": true,
+            "hex": true,
+            "pms": true,
+            "comment": true,
+            "sort_order": true,
+            "is_active": true
+        },
+        "index": {
+            "AMERIMARK_COLOR_GROUP_ITEM_GROUP_ID_SORT_ORDER": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_34514A35792C1FF63E5C5F967FB02C30": true
+        }
+    },
+    "catalog_product_option": {
+        "column": {
+            "color_group_id": true
+        },
+        "constraint": {
+            "CAT_PRD_OPT_COLOR_GROUP_ID_AMERIMARK_COLOR_GROUP_GROUP_ID": true
+        }
+    },
+    "amerimark_color_option_value": {
+        "column": {
+            "option_type_id": true,
+            "color_id": true
+        },
+        "index": {
+            "AMERIMARK_COLOR_OPTION_VALUE_COLOR_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_039C9702FAF0FE28C39035709BEB191C": true,
+            "FK_C03F8E9EA9F46D803AC32758ED116359": true
+        }
+    }
+}

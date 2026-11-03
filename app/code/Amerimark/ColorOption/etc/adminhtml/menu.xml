@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Amerimark_ColorOption::groups" title="Color Option Groups" translate="title" module="Amerimark_ColorOption"
+             sortOrder="35" parent="Magento_Catalog::inventory" action="amerimark_coloroption/group/"
+             resource="Amerimark_ColorOption::groups"/>
+    </menu>
+</config>
