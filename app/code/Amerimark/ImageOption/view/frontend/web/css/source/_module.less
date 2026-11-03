@@ -70,18 +70,74 @@
 }
 
 .imageoption-modal-wrapper {
-    .imageoption-modal__upload {
-        border-top: 1px solid #ddd;
-        margin-top: 20px;
-        padding-top: 16px;
+    // A wider popup so the images and the upload panel sit side by side.
+    .modal-inner-wrap {
+        margin: 3rem auto;
+        max-width: 960px;
+        width: 90%;
+    }
 
-        .imageoption-modal__or {
+    // Two columns: the (possibly long) list of images on the left, the upload panel pinned on the right.
+    .imageoption-modal--two-columns {
+        align-items: flex-start;
+        display: flex;
+        gap: 24px;
+
+        .imageoption-modal__images {
+            flex: 1 1 auto;
+            max-height: calc(100vh - 240px);
+            min-width: 0;
+            overflow-y: auto;
+            padding: 2px 8px 2px 2px;
+        }
+
+        .imageoption-modal__upload {
+            border-left: 1px solid #ddd;
+            flex: 0 0 240px;
+            margin: 0;
+            padding: 0 0 0 24px;
+        }
+    }
+
+    .imageoption-modal__images {
+        max-height: calc(100vh - 240px);
+        overflow-y: auto;
+    }
+
+    .imageoption-modal__upload {
+        .imageoption-modal__upload-title {
+            font-size: 1.6rem;
             font-weight: 600;
-            margin: 0 0 10px;
+            margin: 0 0 6px;
+        }
+
+        .imageoption-modal__upload-hint {
+            margin: 0 0 12px;
         }
 
         .note {
-            margin: 10px 0 0;
+            margin: 12px 0 0;
+        }
+    }
+
+    // On narrow screens stack the panels with the upload on top, so it is still the first thing in reach.
+    @media only screen and (max-width: 767px) {
+        .imageoption-modal--two-columns {
+            flex-direction: column-reverse;
+            gap: 16px;
+
+            .imageoption-modal__images {
+                max-height: 50vh;
+                width: 100%;
+            }
+
+            .imageoption-modal__upload {
+                border-bottom: 1px solid #ddd;
+                border-left: 0;
+                flex: 0 0 auto;
+                padding: 0 0 16px;
+                width: 100%;
+            }
         }
     }
 

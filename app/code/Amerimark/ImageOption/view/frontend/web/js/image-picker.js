@@ -215,12 +215,16 @@ define([
          */
         function buildModal() {
             var $grid = $('<ul class="imageoption-grid"></ul>'),
+                hasImages = (config.items || []).length > 0,
+                $images,
                 $upload;
 
             $content = $('<div class="imageoption-modal"></div>');
 
-            if ((config.items || []).length) {
-                $content.append($grid);
+            if (hasImages) {
+                // Left column: the stock images, scrolling on their own however many there are.
+                $images = $('<div class="imageoption-modal__images"></div>').append($grid);
+                $content.append($images);
             }
 
             $.each(config.items || [], function (i, item) {
@@ -245,9 +249,11 @@ define([
             });
 
             if (config.uploadAllowed && $file.length) {
+                // Right column: always in view, so it never gets pushed below a long list of images.
                 $upload = $('<div class="imageoption-modal__upload"></div>')
-                    .append($('<p class="imageoption-modal__or"></p>').text(
-                        (config.items || []).length ? $t('Or upload your own logo') : $t('Upload your own logo')
+                    .append($('<h4 class="imageoption-modal__upload-title"></h4>').text($t('Upload your own logo')))
+                    .append($('<p class="imageoption-modal__upload-hint"></p>').text(
+                        hasImages ? $t('Don\'t see yours? Upload a file instead.') : $t('Choose a file from your computer.')
                     ))
                     .append(
                         $('<button type="button" class="action primary imageoption-upload-button"></button>')
@@ -265,11 +271,13 @@ define([
                 $content.append($upload);
             }
 
+            $content.toggleClass('imageoption-modal--two-columns', hasImages && !!$upload);
+
             modal({
                 type: 'popup',
                 responsive: true,
-                innerScroll: true,
-                title: (config.items || []).length ? $t('Choose an image') : $t('Upload your logo'),
+                innerScroll: false,
+                title: hasImages ? $t('Choose an image') : $t('Upload your logo'),
                 modalClass: 'imageoption-modal-wrapper',
                 buttons: []
             }, $content);
