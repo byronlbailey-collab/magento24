@@ -28,8 +28,10 @@ class Upload extends AbstractGroup implements HttpPostActionInterface
      */
     public function execute()
     {
+        // Inside the image rows the browser posts the file under the field's own name and says which in param_name.
+        $fileId = (string)$this->getRequest()->getParam('param_name', 'image');
         try {
-            $result = $this->imageUploader->saveFileToTmpDir('image');
+            $result = $this->imageUploader->saveFileToTmpDir($fileId);
         } catch (\Exception $e) {
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
