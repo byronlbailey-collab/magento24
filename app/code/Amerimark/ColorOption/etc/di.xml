@@ -18,4 +18,35 @@
             <argument name="resourceModel" xsi:type="string">Amerimark\ColorOption\Model\ResourceModel\Group</argument>
         </arguments>
     </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <arguments>
+            <argument name="optionTypesToGroups" xsi:type="array">
+                <item name="color_swatch" xsi:type="string">select</item>
+            </argument>
+        </arguments>
+        <plugin name="amerimark_coloroption_values"
+                type="Amerimark\ColorOption\Plugin\Catalog\OptionColorValuesPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Type\Select">
+        <arguments>
+            <argument name="singleSelectionTypes" xsi:type="array">
+                <item name="color_swatch" xsi:type="string">color_swatch</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Validator\Pool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="color_swatch" xsi:type="object">Amerimark\ColorOption\Model\Product\Option\Validator\ColorSwatch</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Option\Value">
+        <plugin name="amerimark_coloroption_value_map"
+                type="Amerimark\ColorOption\Plugin\Catalog\ResourceModel\ColorValueMapPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions">
+        <plugin name="amerimark_coloroption_custom_options_form"
+                type="Amerimark\ColorOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
+    </type>
 </config>

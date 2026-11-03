@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/product_options.xsd">
+    <option name="color_swatch" label="Color" renderer="Amerimark\ColorOption\Block\Adminhtml\Product\Edit\Tab\Options\Type\ColorSwatch">
+        <inputType name="color_swatch" label="Color Swatches"/>
+    </option>
+</config>
