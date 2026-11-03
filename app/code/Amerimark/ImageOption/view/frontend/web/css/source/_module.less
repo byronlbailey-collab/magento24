@@ -16,16 +16,31 @@
     }
 
     .imageoption-selected__thumb {
-        background: #fff center / contain no-repeat;
+        background: #fff;
         border: 1px solid #ccc;
         border-radius: 3px;
         display: inline-block;
-        height: 56px;
-        width: 56px;
+        flex: 0 0 auto;
+        overflow: hidden;
+
+        .imageoption-file-badge {
+            background: #f0f0f0;
+            color: #555;
+        }
+    }
+
+    .imageoption-selected__text {
+        display: flex;
+        flex-direction: column;
     }
 
     .imageoption-selected__label {
         font-weight: 600;
+        word-break: break-word;
+    }
+
+    .imageoption-selected__kind {
+        color: #777;
     }
 
     .imageoption-clear {
@@ -39,7 +54,8 @@
     }
 
     // Visually hidden but still "visible" to the form validator.
-    .imageoption-value {
+    .imageoption-value,
+    .imageoption-file-input {
         border: 0;
         height: 1px;
         left: 0;
@@ -51,17 +67,24 @@
         width: 1px;
     }
 
-    .imageoption-upload {
-        margin-top: 12px;
-    }
-
-    .imageoption-or {
-        display: block;
-        margin-bottom: 6px;
-    }
 }
 
 .imageoption-modal-wrapper {
+    .imageoption-modal__upload {
+        border-top: 1px solid #ddd;
+        margin-top: 20px;
+        padding-top: 16px;
+
+        .imageoption-modal__or {
+            font-weight: 600;
+            margin: 0 0 10px;
+        }
+
+        .note {
+            margin: 10px 0 0;
+        }
+    }
+
     .imageoption-grid {
         display: grid;
         gap: 12px;

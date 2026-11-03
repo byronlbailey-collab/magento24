@@ -32,7 +32,7 @@ class ImageGroupTest extends TestCase
         'url' => 'https://x/a.png', 'thumb' => 'https://x/t/a.png',
     ];
 
-    private function type(array $optionData, ?array $activeItem, bool $required = true, array $allItems = []): ImageGroup
+    private function type(array $optionData, ?array $activeItem, bool $required = true, array $allItems = [], ?array $uploadResult = null): ImageGroup
     {
         $groupItems = $this->createMock(GroupItems::class);
         $groupItems->method('findActiveItem')->willReturn($activeItem);
@@ -54,7 +54,7 @@ class ImageGroupTest extends TestCase
             $this->createMock(OptionFactory::class),
             $this->createMock(Database::class),
             $this->createMock(ValidatorInfo::class),
-            $this->createMock(ValidatorFile::class),
+            $this->fileValidator($uploadResult),
             $this->createMock(UrlBuilder::class),
             $escaper,
             $groupItems,
@@ -71,6 +71,16 @@ class ImageGroupTest extends TestCase
         $type->setProduct($this->createMock(\Magento\Catalog\Model\Product::class));
         $type->setRequest(new DataObject());
         return $type;
+    }
+
+    private function fileValidator(?array $uploadResult): ValidatorFile
+    {
+        $validator = $this->createMock(ValidatorFile::class);
+        $validator->method('setProduct')->willReturnSelf();
+        if ($uploadResult !== null) {
+            $validator->method('validate')->willReturn($uploadResult);
+        }
+        return $validator;
     }
 
     #[DataProvider('imageValues')]
@@ -177,5 +187,29 @@ class ImageGroupTest extends TestCase
     {
         $type = $this->type([], self::ITEM, true, [self::ITEM]);
         $this->assertSame('25', $type->parseOptionValue(' smiley ', []));
+    }
+
+    public function testEmptyImageFieldPostedNextToAnUploadDoesNotMaskTheUpload(): void
+    {
+        // What the product page really submits: options[ID]='' plus the uploaded file.
+        $info = ['type' => 'image/png', 'title' => 'logo.png', 'secret_key' => 'k'];
+        $type = $this->type(['image_allow_upload' => 1, 'image_upload_ext' => 'png'], null, true, [], $info);
+        $_FILES['options_10_file'] = ['name' => 'logo.png', 'type' => 'image/png', 'tmp_name' => '/tmp/x', 'error' => UPLOAD_ERR_OK, 'size' => 10];
+        try {
+            $type->validateUserValue([10 => '']);
+        } finally {
+            unset($_FILES['options_10_file']);
+        }
+        $this->assertTrue($type->getIsValid());
+        $this->assertSame($info, $type->getUserValue());
+        $this->assertSame(json_encode($info), $type->prepareForCart());
+    }
+
+    public function testEmptyImageFieldWithNoUploadStillFailsTheRequiredCheck(): void
+    {
+        $type = $this->type(['image_allow_upload' => 0], null, true);
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage("required option(s) weren't entered");
+        $type->validateUserValue([10 => '']);
     }
 }

@@ -74,6 +74,17 @@ class ImageGroup extends Template
     }
 
     /**
+     * Value for the file input's accept attribute, e.g. ".png,.jpg".
+     *
+     * @return string
+     */
+    public function getUploadAccept(): string
+    {
+        $parts = preg_split('/[\s,;]+/', strtolower($this->getUploadExtensions()), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        return implode(',', array_map(static fn (string $e) => '.' . ltrim($e, '.'), $parts));
+    }
+
+    /**
      * Value of the option from the cart/wishlist item being edited (or the posted value after a failed add).
      *
      * @return mixed
@@ -122,7 +133,9 @@ class ImageGroup extends Template
             'selected' => $this->getSelectedImageId(),
             'required' => (bool)$this->getOption()->getIsRequire(),
             'uploadAllowed' => $this->isUploadAllowed(),
+            'uploadExtensions' => $this->isUploadAllowed() ? $this->getUploadExtensions() : '',
             'hasSavedUpload' => $this->getFileInfo()->hasData(),
+            'savedUploadTitle' => (string)$this->getFileInfo()->getTitle(),
             'optionId' => (int)$this->getOption()->getId(),
         ];
     }

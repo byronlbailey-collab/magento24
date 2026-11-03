@@ -125,6 +125,12 @@ class ImageGroup extends File
     {
         $option = $this->getOption();
         $raw = $values[$option->getId()] ?? null;
+        if ($raw === '' || $raw === null) {
+            // The product page always posts the (empty) image field next to an uploaded file. Left in place, core's
+            // file handling reads '' as file info supplied the old way, drops the upload and skips the required check.
+            unset($values[$option->getId()]);
+            $raw = null;
+        }
 
         if ($this->isUploadAllowed()) {
             // The core file validation reads its allowed extensions from file_extension.
