@@ -38,7 +38,7 @@ class OptionColorValuesPluginTest extends TestCase
             4 => ['item_id' => 4, 'name' => 'Navy'],
         ]);
         $option = $this->option(['type' => 'color_swatch', 'color_values' => [
-            ['color_id' => '3', 'price' => '2.5', 'price_type' => 'percent', 'sku' => 'R', 'sort_order' => '1'],
+            ['color_id' => '3', 'price' => '2.5', 'price_type' => 'percent', 'sort_order' => '1'],
             ['color_id' => '4', 'price' => '', 'price_type' => '', 'option_type_id' => '77'],
         ]]);
 
@@ -107,36 +107,38 @@ class OptionColorValuesPluginTest extends TestCase
         $this->assertSame('Navy', $option->getData('values')[0]['title']);
     }
 
-    public function testOtherTypesDropTheGroupAndForgetMappings(): void
+    public function testOptionsThatAreNotColorOptionsForgetColorLinks(): void
     {
         $this->colors->expects($this->once())->method('deleteMappingsOfOption')->with(8);
-        $option = $this->option(['option_id' => 8, 'type' => 'drop_down', 'color_group_id' => '']);
+        $option = $this->option(['option_id' => 8, 'type' => 'drop_down']);
 
         $this->plugin->beforeBeforeSave($option);
 
-        $this->assertNull($option->getData('color_group_id'));
         $this->assertNull($option->getData('values'));
     }
 
     public function testNewNonColorOptionsTouchNothingInTheDatabase(): void
     {
         $this->colors->expects($this->never())->method('deleteMappingsOfOption');
-        $option = $this->option(['type' => 'text', 'color_group_id' => '']);
 
-        $this->plugin->beforeBeforeSave($option);
-
-        $this->assertNull($option->getData('color_group_id'));
+        $this->plugin->beforeBeforeSave($this->option(['type' => 'text']));
     }
 
-    public function testColorOptionKeepsItsGroupAndNeverStoresZero(): void
+    public function testColorOptionsKeepTheirLinks(): void
     {
+        $this->colors->expects($this->never())->method('deleteMappingsOfOption');
         $this->colors->method('getColors')->willReturn([]);
-        $option = $this->option(['type' => 'color_swatch', 'color_group_id' => '12', 'color_values' => []]);
-        $this->plugin->beforeBeforeSave($option);
-        $this->assertSame(12, $option->getData('color_group_id'));
 
-        $none = $this->option(['type' => 'color_swatch', 'color_group_id' => '0', 'color_values' => []]);
-        $this->plugin->beforeBeforeSave($none);
-        $this->assertNull($none->getData('color_group_id'));
+        $this->plugin->beforeBeforeSave($this->option(['option_id' => 8, 'type' => 'color_swatch', 'color_values' => []]));
+    }
+
+    public function testSkuIsNotStoredForColors(): void
+    {
+        $this->colors->method('getColors')->willReturn([3 => ['item_id' => 3, 'name' => 'Red']]);
+        $option = $this->option(['type' => 'color_swatch', 'color_values' => [['color_id' => '3', 'sku' => 'IGNORED']]]);
+
+        $this->plugin->beforeValidateBeforeSave($option);
+
+        $this->assertSame('', $option->getData('values')[0]['sku']);
     }
 }

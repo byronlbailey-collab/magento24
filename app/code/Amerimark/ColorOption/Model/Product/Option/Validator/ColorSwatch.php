@@ -16,9 +16,9 @@ use Magento\Framework\Locale\FormatInterface;
 /**
  * Validates a Color option when a product is saved.
  *
- * On top of the drop-down rules (title, at least one value, valid prices): an existing color group, every color taken
- * from that group, and each color name used only once in the option (case-insensitive) - the group itself may hold
- * several colors with the same name.
+ * On top of the drop-down rules (title, at least one value, valid prices): every row names an existing color, and each
+ * color name is used only once in the option (case-insensitive). A group may hold several colors with the same name,
+ * and one option may mix colors of several groups.
  */
 class ColorSwatch extends Select
 {
@@ -50,13 +50,10 @@ class ColorSwatch extends Select
         if (!$this->validateOptionType($option)) {
             $messages['option type'] = 'Invalid option type';
         }
-        $groupId = (int)$option->getData('color_group_id');
-        if (!$this->colors->groupExists($groupId)) {
-            $messages['color group'] = 'Select an existing color group for the Color option';
-        } elseif (!$this->validateOptionValue($option)) {
+        if (!$this->validateOptionValue($option)) {
             $messages['option values'] = 'Add at least one color, with a valid price, to the Color option';
         } else {
-            $problem = $this->findColorProblem($option, $groupId);
+            $problem = $this->findColorProblem($option);
             if ($problem !== null) {
                 $messages['option colors'] = $problem;
             }
@@ -67,10 +64,9 @@ class ColorSwatch extends Select
 
     /**
      * @param Option $option
-     * @param int $groupId
      * @return string|null
      */
-    private function findColorProblem(Option $option, int $groupId): ?string
+    private function findColorProblem(Option $option): ?string
     {
         $values = $option->getValues() ?: $option->getData('values');
         $live = array_filter($values, fn ($value) => empty($value['is_delete']));
@@ -81,12 +77,6 @@ class ColorSwatch extends Select
             $color = $colors[(int)($value['color_id'] ?? 0)] ?? null;
             if ($color === null) {
                 return 'Choose a color for every row of the Color option';
-            }
-            if ((int)$color['group_id'] !== $groupId) {
-                return sprintf(
-                    'The color "%s" is not in the selected color group. Pick colors from the option\'s group.',
-                    $color['name']
-                );
             }
             $key = mb_strtolower(trim((string)$color['name']));
             if (isset($names[$key])) {

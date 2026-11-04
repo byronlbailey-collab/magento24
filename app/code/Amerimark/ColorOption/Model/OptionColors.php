@@ -25,20 +25,6 @@ class OptionColors
     }
 
     /**
-     * @param int $groupId
-     * @return bool
-     */
-    public function groupExists(int $groupId): bool
-    {
-        $connection = $this->resource->getConnection();
-        return $groupId > 0 && (bool)$connection->fetchOne(
-            $connection->select()
-                ->from($this->resource->getTableName(GroupResource::TABLE), ['group_id'])
-                ->where('group_id = ?', $groupId)
-        );
-    }
-
-    /**
      * Colors by id: item_id => [item_id, group_id, name, hex, pms, comment, is_active].
      *
      * @param int[] $colorIds
@@ -82,6 +68,40 @@ class OptionColors
                 ->where('option_type_id IN (?)', $valueIds)
         );
         return array_map('intval', $pairs);
+    }
+
+    /**
+     * What the storefront needs to draw each value of a color option: option_type_id => [name, hex, is_active].
+     *
+     * @param int[] $valueIds
+     * @return array<int, array{name: string, hex: string, is_active: bool}>
+     */
+    public function getSwatchData(array $valueIds): array
+    {
+        $valueIds = array_values(array_filter(array_map('intval', $valueIds)));
+        if (!$valueIds) {
+            return [];
+        }
+        $connection = $this->resource->getConnection();
+        $rows = $connection->fetchAll(
+            $connection->select()
+                ->from(['m' => $this->resource->getTableName(GroupResource::VALUE_MAP_TABLE)], ['option_type_id'])
+                ->join(
+                    ['i' => $this->resource->getTableName(GroupResource::ITEM_TABLE)],
+                    'i.item_id = m.color_id',
+                    ['name', 'hex', 'is_active']
+                )
+                ->where('m.option_type_id IN (?)', $valueIds)
+        );
+        $result = [];
+        foreach ($rows as $row) {
+            $result[(int)$row['option_type_id']] = [
+                'name' => (string)$row['name'],
+                'hex' => (string)$row['hex'],
+                'is_active' => (bool)$row['is_active'],
+            ];
+        }
+        return $result;
     }
 
     /**

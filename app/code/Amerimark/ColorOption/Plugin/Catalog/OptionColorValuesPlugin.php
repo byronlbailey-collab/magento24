@@ -13,11 +13,11 @@ use Magento\Catalog\Model\Product\Option;
  * Turns the Color option's posted rows (color_values) into the regular select-option values the core saves.
  *
  * A color option is a select-type option whose values each point at a color of the option's color group: the title is
- * the color's name, price/price type/SKU/sort order work as for a drop-down. The product form posts the rows as
- * color_values[i][color_id|price|price_type|sku|sort_order|option_type_id|is_delete]; here they become "values" before
+ * the color's name, price/price type/sort order work as for a drop-down. The product form posts the rows as
+ * color_values[i][color_id|price|price_type|sort_order|option_type_id|is_delete]; here they become "values" before
  * validation, so the core's own value saving does the rest (see ColorValueMapPlugin for the color link).
  *
- * It also clears the color settings of options that are not (or are no longer) Color options.
+ * It also forgets the color links of options that are no longer Color options.
  */
 class OptionColorValuesPlugin
 {
@@ -40,7 +40,7 @@ class OptionColorValuesPlugin
     }
 
     /**
-     * Normalises the stored group id (the form posts '' for options of other types).
+     * Applies the rows before saving, and forgets the color links of options that stopped being Color options.
      *
      * @param Option $subject
      * @return void
@@ -48,15 +48,9 @@ class OptionColorValuesPlugin
     public function beforeBeforeSave(Option $subject): void
     {
         $this->transform($subject);
-        if ($subject->getData('type') !== OptionColors::OPTION_TYPE) {
-            $subject->setData('color_group_id', null);
-            if ($subject->getId()) {
-                $this->colors->deleteMappingsOfOption((int)$subject->getId());
-            }
-            return;
+        if ($subject->getData('type') !== OptionColors::OPTION_TYPE && $subject->getId()) {
+            $this->colors->deleteMappingsOfOption((int)$subject->getId());
         }
-        $groupId = (int)$subject->getData('color_group_id');
-        $subject->setData('color_group_id', $groupId > 0 ? $groupId : null);
     }
 
     /**
@@ -97,7 +91,7 @@ class OptionColorValuesPlugin
                 'title' => $colors[$colorId]['name'] ?? '',
                 'price' => $row['price'] ?? '',
                 'price_type' => ($row['price_type'] ?? '') ?: 'fixed',
-                'sku' => $row['sku'] ?? '',
+                'sku' => '',
                 'sort_order' => (int)($row['sort_order'] ?? 0),
                 'is_delete' => 0,
             ];

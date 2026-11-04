@@ -13,12 +13,14 @@ use Magento\Ui\Component\Form\Element\Select;
 use Magento\Ui\Component\Form\Field;
 
 /**
- * Adds the Color option to the product form's Customizable Options panel: a Color Group field and a grid of the
- * option's colors (each with the same price, price type, SKU and sort order fields a drop-down value has).
+ * Adds the Color option to the product form's Customizable Options panel: a grid of the option's colors. Each row
+ * picks a color group, then a color from it (so one option can mix colors of several groups), and has the same price
+ * and price type fields a drop-down value has.
  */
 class CustomOptionsModifierPlugin
 {
     public const FIELD_GROUP = 'color_group_id';
+    public const TYPE_COMPONENT = 'Amerimark_ColorOption/js/form/element/option-type';
     public const GRID_COLORS = 'color_values';
 
     private const OPTION_PATH = ['custom_options', 'children', 'options', 'children', 'record', 'children',
@@ -54,22 +56,18 @@ class CustomOptionsModifierPlugin
         }
 
         $catalog = $this->colors->getCatalog();
-        $option[CustomOptions::CONTAINER_TYPE_STATIC_NAME]['children'][self::FIELD_GROUP] =
-            $this->groupField($catalog['groups']);
         $option[self::GRID_COLORS] = $this->colorsGrid(
             $option[CustomOptions::GRID_TYPE_SELECT_NAME],
-            $catalog['colors']
+            $catalog
         );
 
+        // the type selector shows/hides the other groups' fields itself; this subclass also handles the color grid
         $config = &$option[CustomOptions::CONTAINER_COMMON_NAME]['children'][CustomOptions::FIELD_TYPE_NAME]
             ['arguments']['data']['config'];
+        $config['component'] = self::TYPE_COMPONENT;
         $config['groupsConfig']['color_swatch'] = [
             'values' => [OptionColors::OPTION_TYPE],
-            'indexes' => [
-                CustomOptions::CONTAINER_TYPE_STATIC_NAME,
-                self::FIELD_GROUP,
-                self::GRID_COLORS,
-            ],
+            'indexes' => [],
         ];
         return $meta;
     }
@@ -98,13 +96,16 @@ class CustomOptionsModifierPlugin
                 }
             }
             $colorIds = $this->colors->getColorIdsByValueIds($valueIds);
+            $colors = $this->colors->getColors($colorIds);
             foreach ($options as &$optionData) {
                 if (($optionData['type'] ?? null) !== OptionColors::OPTION_TYPE) {
                     continue;
                 }
                 $rows = [];
                 foreach ($optionData[CustomOptions::GRID_TYPE_SELECT_NAME] ?? [] as $row) {
-                    $row['color_id'] = (string)($colorIds[(int)($row['option_type_id'] ?? 0)] ?? '');
+                    $colorId = $colorIds[(int)($row['option_type_id'] ?? 0)] ?? 0;
+                    $row['color_id'] = $colorId ? (string)$colorId : '';
+                    $row[self::FIELD_GROUP] = isset($colors[$colorId]) ? (string)$colors[$colorId]['group_id'] : '';
                     $rows[] = $row;
                 }
                 $optionData[self::GRID_COLORS] = $rows;
@@ -115,59 +116,62 @@ class CustomOptionsModifierPlugin
     }
 
     /**
-     * @param array[] $groups
+     * The Color grid: a copy of the core drop-down values grid whose title and SKU columns are replaced by a group
+     * chooser and a color chooser, and whose price column is narrow.
+     *
+     * @param array $selectGrid
+     * @param array $catalog
      * @return array
      */
-    private function groupField(array $groups): array
+    private function colorsGrid(array $selectGrid, array $catalog): array
     {
-        $options = [];
-        foreach ($groups as $group) {
-            $options[] = [
+        $grid = $selectGrid;
+        $config = &$grid['arguments']['data']['config'];
+        $config['addButtonLabel'] = __('Add Color');
+        // shown by the type selector once "Color Swatches" is chosen
+        $config['visible'] = false;
+        unset($config);
+
+        $groups = [];
+        foreach ($catalog['groups'] as $group) {
+            $groups[] = [
                 'value' => (string)$group['group_id'],
                 'label' => $group['name'] . ($group['is_active'] ? '' : ' (' . __('inactive') . ')'),
             ];
         }
-        return ['arguments' => ['data' => ['config' => [
-            'label' => __('Color Group'),
-            'componentType' => Field::NAME,
-            'formElement' => Select::NAME,
-            'dataScope' => self::FIELD_GROUP,
-            'dataType' => Text::NAME,
-            'sortOrder' => 10,
-            'options' => $options,
-            'caption' => __('-- Please select --'),
-            'notice' => __('Manage groups under Catalog > Inventory > Color Option Groups.'),
-            'validation' => ['required-entry' => true],
-        ]]]];
-    }
 
-    /**
-     * The Color grid: a copy of the core drop-down values grid whose title column is replaced by a color chooser.
-     *
-     * @param array $selectGrid
-     * @param array $colorsByGroup
-     * @return array
-     */
-    private function colorsGrid(array $selectGrid, array $colorsByGroup): array
-    {
-        $grid = $selectGrid;
-        $grid['arguments']['data']['config']['addButtonLabel'] = __('Add Color');
+        $record = $grid['children']['record']['children'];
+        unset($record['title'], $record['sku']);
+        $record['price']['arguments']['data']['config']['additionalClasses'] = ['admin__field-x-small' => true];
 
-        $record = &$grid['children']['record']['children'];
-        $record = ['color_id' => ['arguments' => ['data' => ['config' => [
-            'label' => __('Color'),
-            'componentType' => Field::NAME,
-            'formElement' => Select::NAME,
-            'component' => 'Amerimark_ColorOption/js/form/element/color-select',
-            'elementTmpl' => 'Amerimark_ColorOption/form/element/color-select',
-            'dataScope' => 'color_id',
-            'dataType' => Text::NAME,
-            'sortOrder' => 10,
-            'colorsByGroup' => $colorsByGroup,
-            'options' => [],
-            'caption' => __('-- Choose a color --'),
-            'validation' => ['required-entry' => true],
-        ]]]]] + array_diff_key($record, ['title' => true]);
+        $record = [
+            self::FIELD_GROUP => ['arguments' => ['data' => ['config' => [
+                'label' => __('Color Group'),
+                'componentType' => Field::NAME,
+                'formElement' => Select::NAME,
+                'dataScope' => self::FIELD_GROUP,
+                'dataType' => Text::NAME,
+                'sortOrder' => 5,
+                'options' => $groups,
+                'caption' => __('-- Choose a group --'),
+                'validation' => ['required-entry' => true],
+            ]]]],
+            'color_id' => ['arguments' => ['data' => ['config' => [
+                'label' => __('Color'),
+                'componentType' => Field::NAME,
+                'formElement' => Select::NAME,
+                'component' => 'Amerimark_ColorOption/js/form/element/color-select',
+                'elementTmpl' => 'Amerimark_ColorOption/form/element/color-select',
+                'dataScope' => 'color_id',
+                'dataType' => Text::NAME,
+                'sortOrder' => 10,
+                'colorsByGroup' => $catalog['colors'],
+                'options' => [],
+                'caption' => __('-- Choose a color --'),
+                'validation' => ['required-entry' => true],
+            ]]]],
+        ] + $record;
+        $grid['children']['record']['children'] = $record;
         return $grid;
     }
 }

@@ -106,6 +106,11 @@ class Save extends AbstractGroup implements HttpPostActionInterface
                 'is_active' => !empty($row['is_active']),
             ];
         }
+        // rows are ordered by their dragged position; store 0, 1, 2... so the order is always clean
+        usort($items, static fn (array $a, array $b): int => $a['sort_order'] <=> $b['sort_order']);
+        foreach ($items as $position => &$item) {
+            $item['sort_order'] = $position;
+        }
         return $items;
     }
 }

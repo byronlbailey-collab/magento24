@@ -8,8 +8,8 @@ define([
     'use strict';
 
     /**
-     * Color chooser for one row of a Color option: a drop-down listing the colors of the option's color group, with a
-     * swatch of the chosen color next to it. The list follows the option's "Color Group" field.
+     * Color chooser for one row of a Color option: a drop-down listing the colors of the row's color group, with a
+     * swatch of the chosen color next to it. The list follows the row's "Color Group" field.
      */
     return Select.extend({
         defaults: {
@@ -39,13 +39,13 @@ define([
          * @inheritdoc
          */
         initialize: function () {
-            var optionScope;
+            var groupScope;
 
             this._super();
-            // the row's data scope is <option scope>.color_values.<n>.color_id
-            optionScope = String(this.dataScope).replace(/\.color_values\.[^.]+\.color_id$/, '');
+            // the group field is this field's sibling in the same row
+            groupScope = String(this.dataScope).replace(/\.color_id$/, '.color_group_id');
             this.setLinks({
-                groupId: this.provider + ':' + optionScope + '.color_group_id'
+                groupId: this.provider + ':' + groupScope
             }, 'imports');
             this.groupId.subscribe(this.updateOptions.bind(this));
             this.value.subscribe(this.updateSwatch.bind(this));

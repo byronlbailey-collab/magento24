@@ -26,8 +26,13 @@ class Collection extends SearchResult
                 $this->getTable(GroupResource::ITEM_TABLE)
             )),
             'usage_count' => new \Zend_Db_Expr(sprintf(
-                '(SELECT COUNT(*) FROM %s o WHERE o.color_group_id = main_table.group_id)',
-                $this->getTable(GroupResource::OPTION_TABLE)
+                '(SELECT COUNT(DISTINCT v.option_id) FROM %s m'
+                . ' JOIN %s i ON i.item_id = m.color_id'
+                . ' JOIN %s v ON v.option_type_id = m.option_type_id'
+                . ' WHERE i.group_id = main_table.group_id)',
+                $this->getTable(GroupResource::VALUE_MAP_TABLE),
+                $this->getTable(GroupResource::ITEM_TABLE),
+                $this->getTable(GroupResource::TYPE_VALUE_TABLE)
             )),
         ]);
         return $this;

@@ -15,7 +15,6 @@ class Group extends AbstractDb
 {
     public const TABLE = 'amerimark_color_group';
     public const ITEM_TABLE = 'amerimark_color_group_item';
-    public const OPTION_TABLE = 'catalog_product_option';
     public const VALUE_MAP_TABLE = 'amerimark_color_option_value';
     public const TYPE_VALUE_TABLE = 'catalog_product_option_type_value';
     public const TYPE_TITLE_TABLE = 'catalog_product_option_type_title';
@@ -29,7 +28,7 @@ class Group extends AbstractDb
     }
 
     /**
-     * Number of product options (across all products) that use the group.
+     * Number of product options (across all products) that use at least one color of the group.
      *
      * @param int $groupId
      * @return int
@@ -39,8 +38,11 @@ class Group extends AbstractDb
         $connection = $this->getConnection();
         return (int)$connection->fetchOne(
             $connection->select()
-                ->from($this->getTable(self::OPTION_TABLE), ['COUNT(*)'])
-                ->where('color_group_id = ?', $groupId)
+                ->from(['m' => $this->getTable(self::VALUE_MAP_TABLE)], [])
+                ->join(['i' => $this->getTable(self::ITEM_TABLE)], 'i.item_id = m.color_id', [])
+                ->join(['v' => $this->getTable(self::TYPE_VALUE_TABLE)], 'v.option_type_id = m.option_type_id', [])
+                ->columns(['COUNT(DISTINCT v.option_id)'])
+                ->where('i.group_id = ?', $groupId)
         );
     }
 

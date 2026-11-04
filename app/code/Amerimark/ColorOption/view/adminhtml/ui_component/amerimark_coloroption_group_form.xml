@@ -99,6 +99,10 @@
                 </additionalClasses>
                 <componentType>dynamicRows</componentType>
                 <recordTemplate>record</recordTemplate>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">true</param>
+                    <param name="template" xsi:type="string">ui/dynamic-rows/cells/dnd</param>
+                </dndConfig>
             </settings>
             <container name="record" component="Magento_Ui/js/dynamic-rows/record">
                 <argument name="data" xsi:type="array">
@@ -106,6 +110,7 @@
                         <item name="isTemplate" xsi:type="boolean">true</item>
                         <item name="is_collection" xsi:type="boolean">true</item>
                         <item name="componentType" xsi:type="string">container</item>
+                        <item name="positionProvider" xsi:type="string">sort_order</item>
                     </item>
                 </argument>
                 <field name="item_id" formElement="input">
@@ -161,17 +166,9 @@
                     </settings>
                 </field>
                 <field name="sort_order" sortOrder="50" formElement="input">
-                    <argument name="data" xsi:type="array">
-                        <item name="config" xsi:type="array">
-                            <item name="default" xsi:type="number">0</item>
-                        </item>
-                    </argument>
                     <settings>
                         <dataType>number</dataType>
-                        <label translate="true">Sort Order</label>
-                        <validation>
-                            <rule name="validate-digits" xsi:type="boolean">true</rule>
-                        </validation>
+                        <visible>false</visible>
                     </settings>
                 </field>
                 <field name="is_active" sortOrder="60" formElement="checkbox">

@@ -49,4 +49,8 @@
         <plugin name="amerimark_coloroption_custom_options_form"
                 type="Amerimark\ColorOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
     </type>
+    <type name="Magento\Catalog\Block\Product\View\Options">
+        <plugin name="amerimark_coloroption_group_of_option"
+                type="Amerimark\ColorOption\Plugin\Catalog\Block\OptionsGroupPlugin"/>
+    </type>
 </config>

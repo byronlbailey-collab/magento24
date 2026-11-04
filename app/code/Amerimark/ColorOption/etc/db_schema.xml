@@ -35,12 +35,6 @@
             <column name="sort_order"/>
         </index>
     </table>
-    <table name="catalog_product_option">
-        <column xsi:type="int" name="color_group_id" unsigned="true" nullable="true" comment="Color Group ID (Amerimark_ColorOption)"/>
-        <constraint xsi:type="foreign" referenceId="CATALOG_PRODUCT_OPTION_COLOR_GROUP_ID_AMERIMARK_COLOR_GROUP_GROUP_ID"
-                    table="catalog_product_option" column="color_group_id"
-                    referenceTable="amerimark_color_group" referenceColumn="group_id" onDelete="NO ACTION"/>
-    </table>
     <table name="amerimark_color_option_value" resource="default" engine="innodb" comment="Which group color a color option value is">
         <column xsi:type="int" name="option_type_id" unsigned="true" nullable="false" comment="Option Type Value ID"/>
         <column xsi:type="int" name="color_id" unsigned="true" nullable="false" comment="Color ID"/>
