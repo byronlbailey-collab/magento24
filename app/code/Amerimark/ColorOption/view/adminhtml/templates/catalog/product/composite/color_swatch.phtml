@@ -1,0 +1,42 @@
+<?php
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+
+/**
+ * Admin "configure product" popup (order creation, quote editing): a drop-down of the option's enabled colors with
+ * their price notes.
+ *
+ * @var \Magento\Catalog\Block\Product\View\Options\Type\Select\Checkable $block
+ * @var \Amerimark\ColorOption\ViewModel\Swatches $viewModel
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$viewModel = $block->getData('view_model');
+$option = $block->getOption();
+if (!$option) {
+    return;
+}
+$optionId = (int)$option->getId();
+$required = (bool)$option->getIsRequire();
+$selected = (int)$block->getPreconfiguredValue($option);
+?>
+<div class="admin__field field<?= $required ? ' _required required' : '' ?>">
+    <label class="label admin__field-label"><span><?= $escaper->escapeHtml($option->getTitle()) ?></span></label>
+    <div class="control admin__field-control">
+        <select name="options[<?= $optionId ?>]" id="select_<?= $optionId ?>"
+                class="admin__control-select product-custom-option<?= $required ? ' required' : '' ?>">
+            <option value=""><?= $escaper->escapeHtml(__('-- Please Select --')) ?></option>
+            <?php foreach ($viewModel->getSwatches($option) as $swatch): ?>
+                <?php
+                $value = $swatch['source'];
+                $priceText = trim((string)preg_replace('/\s+/', ' ', strip_tags($block->formatPrice($value))));
+                ?>
+                <option value="<?= (int)$swatch['value'] ?>"
+                        price="<?= $escaper->escapeHtmlAttr($block->getCurrencyByStore($value)) ?>"
+                        <?= $selected === (int)$swatch['value'] ? ' selected="selected"' : '' ?>>
+                    <?= $escaper->escapeHtml(trim($swatch['name'] . ' ' . $priceText)) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>

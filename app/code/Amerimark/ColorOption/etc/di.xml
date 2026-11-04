@@ -26,6 +26,8 @@
         </arguments>
         <plugin name="amerimark_coloroption_values"
                 type="Amerimark\ColorOption\Plugin\Catalog\OptionColorValuesPlugin"/>
+        <plugin name="amerimark_coloroption_group_factory"
+                type="Amerimark\ColorOption\Plugin\Catalog\OptionGroupFactoryPlugin"/>
     </type>
     <type name="Magento\Catalog\Model\Product\Option\Type\Select">
         <arguments>
@@ -52,5 +54,29 @@
     <type name="Magento\Catalog\Block\Product\View\Options">
         <plugin name="amerimark_coloroption_group_of_option"
                 type="Amerimark\ColorOption\Plugin\Catalog\Block\OptionsGroupPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="amerimark_coloroption_availability"
+                type="Amerimark\ColorOption\Plugin\Quote\QuoteColorAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\QuoteValidator">
+        <plugin name="amerimark_coloroption_submit_guard"
+                type="Amerimark\ColorOption\Plugin\Quote\QuoteColorAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Checkout\Model\Session">
+        <plugin name="amerimark_coloroption_session_quote_check"
+                type="Amerimark\ColorOption\Plugin\Checkout\SessionQuoteColorCheckPlugin"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\DefaultItem">
+        <plugin name="amerimark_coloroption_minicart_html"
+                type="Amerimark\ColorOption\Plugin\Checkout\MiniCartOptionHtmlPlugin"/>
+    </type>
+    <!-- Global (not graphql area) file: an area file would replace, not extend, the core map. -->
+    <type name="Magento\QuoteGraphQl\Model\CartItem\DataProvider\CustomizableOptionValue\Composite">
+        <arguments>
+            <argument name="customizableOptionValues" xsi:type="array">
+                <item name="color_swatch" xsi:type="string">Amerimark\ColorOption\Model\GraphQl\CartColorValue</item>
+            </argument>
+        </arguments>
     </type>
 </config>

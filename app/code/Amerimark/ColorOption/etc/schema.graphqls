@@ -1,0 +1,16 @@
+# Copyright Amerimark. All rights reserved.
+
+type CustomizableColorOption implements CustomizableOptionInterface @doc(description: "Contains information about a set of color swatches that is defined as part of a customizable option. The shopper picks one color.") {
+    value: [CustomizableColorValue] @doc(description: "The colors the shopper can choose from, in display order. Colors that are disabled are not listed.")
+}
+
+type CustomizableColorValue @doc(description: "A color the shopper can choose for a color customizable option, with its price and SKU like a drop-down value.") {
+    option_type_id: Int @doc(description: "The ID assigned to the value.")
+    price: Float @doc(description: "The price assigned to this color.")
+    price_type: PriceTypeEnum @doc(description: "FIXED, PERCENT, or DYNAMIC.")
+    sku: String @doc(description: "The Stock Keeping Unit for this color.")
+    title: String @doc(description: "The name of the color.")
+    sort_order: Int @doc(description: "The order in which the color is displayed.")
+    hex: String @doc(description: "The display color as #RRGGBB.")
+    uid: ID! @doc(description: "The unique ID for a `CustomizableColorValue` object. Use it as the value of the customizable option when adding the product to the cart.") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\CustomizableSelectedOptionValueUid")
+}
