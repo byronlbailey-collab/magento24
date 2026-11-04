@@ -106,6 +106,25 @@ define([
         },
 
         /**
+         * Magento's bundled picker only changes the color while the mouse *moves* after pressing down on the shade
+         * square or the hue bar, so a plain click does nothing (it works only if the hand happens to move). Replay the
+         * press position as a mouse move so a click picks the color under the pointer, and a drag still works.
+         *
+         * @param {jQuery} $swatch
+         */
+        enableClickToPick: function ($swatch) {
+            var $picker = $('#' + $swatch.data('colorpickerId'));
+
+            $picker.on('mousedown', '.colorpicker_color, .colorpicker_hue', function (event) {
+                var move = $.Event('mousemove');
+
+                move.pageX = event.pageX;
+                move.pageY = event.pageY;
+                $(document).trigger(move);
+            });
+        },
+
+        /**
          * Attach Magento's color picker to the swatch button.
          *
          * @param {HTMLElement} element
@@ -147,6 +166,8 @@ define([
                     $(el).ColorPickerHide();
                 }
             });
+
+            this.enableClickToPick($swatch);
         }
     });
 });
