@@ -188,9 +188,9 @@ class OptionColors
     }
 
     /**
-     * What the product form offers: every group, and each group's colors with their hex value.
+     * What the product form offers: every group, each group's colors with their hex value, and the staff comments.
      *
-     * @return array{groups: array[], colors: array<int, array[]>}
+     * @return array{groups: array[], colors: array<int, array[]>, comments: array<int, string>}
      */
     public function getCatalog(): array
     {
@@ -204,18 +204,22 @@ class OptionColors
             $connection->select()
                 ->from(
                     $this->resource->getTableName(GroupResource::ITEM_TABLE),
-                    ['item_id', 'group_id', 'name', 'hex', 'is_active']
+                    ['item_id', 'group_id', 'name', 'hex', 'is_active', 'comment']
                 )
                 ->order(['sort_order ASC', 'item_id ASC'])
         );
         $colors = [];
+        $comments = [];
         foreach ($items as $item) {
+            if (trim((string)$item['comment']) !== '') {
+                $comments[(int)$item['item_id']] = trim((string)$item['comment']);
+            }
             $colors[(int)$item['group_id']][] = [
                 'value' => (int)$item['item_id'],
                 'label' => $item['name'] . ($item['is_active'] ? '' : ' (' . __('disabled') . ')'),
                 'hex' => $item['hex'],
             ];
         }
-        return ['groups' => $groups, 'colors' => $colors];
+        return ['groups' => $groups, 'colors' => $colors, 'comments' => $comments];
     }
 }

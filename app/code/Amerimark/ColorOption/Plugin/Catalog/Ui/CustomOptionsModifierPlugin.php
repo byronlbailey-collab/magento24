@@ -9,6 +9,7 @@ namespace Amerimark\ColorOption\Plugin\Catalog\Ui;
 use Amerimark\ColorOption\Model\OptionColors;
 use Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions;
 use Magento\Ui\Component\Form\Element\DataType\Text;
+use Magento\Ui\Component\Form\Element\Input;
 use Magento\Ui\Component\Form\Element\Select;
 use Magento\Ui\Component\Form\Field;
 
@@ -169,6 +170,18 @@ class CustomOptionsModifierPlugin
                 'options' => [],
                 'caption' => __('-- Choose a color --'),
                 'validation' => ['required-entry' => true],
+            ]]]],
+            // the color's staff comment, as text
+            'color_comment' => ['arguments' => ['data' => ['config' => [
+                'label' => __('Comment'),
+                'componentType' => Field::NAME,
+                'formElement' => Input::NAME,
+                'component' => 'Amerimark_ColorOption/js/form/element/color-comment',
+                'elementTmpl' => 'Amerimark_ColorOption/form/element/color-comment',
+                'dataScope' => 'color_comment',
+                'dataType' => Text::NAME,
+                'sortOrder' => 12,
+                'commentsById' => $catalog['comments'] ?: new \stdClass(),
             ]]]],
         ] + $record;
         $grid['children']['record']['children'] = $record;
