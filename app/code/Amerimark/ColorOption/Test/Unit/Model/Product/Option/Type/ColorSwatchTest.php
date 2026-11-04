@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Amerimark\ColorOption\Test\Unit\Model\Product\Option\Type;
 
 use Amerimark\ColorOption\Model\OptionColors;
+use Amerimark\ColorOption\Model\SwatchStyles;
 use Amerimark\ColorOption\Model\Product\Option\Type\ColorSwatch;
 use Magento\Catalog\Model\Product\Option;
 use Magento\Checkout\Model\Session;
@@ -34,6 +35,7 @@ class ColorSwatchTest extends TestCase
             new StringUtils(),
             $escaper,
             $this->colors,
+            new SwatchStyles(['spectrum' => ['label' => 'Full spectrum', 'image' => 'conic-gradient(red, blue)']]),
             [],
             ['color_swatch' => 'color_swatch']
         );
@@ -54,7 +56,7 @@ class ColorSwatchTest extends TestCase
 
     public function testFormattedValueIsSwatchPlusEscapedName(): void
     {
-        $this->colors->method('getSwatchData')->with([7])->willReturn([7 => ['name' => 'Blue', 'hex' => '#0000FF', 'is_active' => true]]);
+        $this->colors->method('getSwatchData')->with([7])->willReturn([7 => ['name' => 'Blue', 'hex' => '#0000FF', 'swatch_style' => 'solid', 'is_active' => true]]);
 
         $html = $this->type->getFormattedOptionValue('7');
 
@@ -62,6 +64,15 @@ class ColorSwatchTest extends TestCase
         $this->assertStringContainsString('#0000FF', $html);
         $this->assertStringContainsString('Blue &lt;b&gt;', $html, 'the name is escaped');
         $this->assertStringNotContainsString('<b>', $html);
+    }
+
+    public function testSpectrumColorsAreDrawnWithTheirStyleOverTheFallbackColor(): void
+    {
+        $this->colors->method('getSwatchData')->willReturn([7 => ['name' => 'Full Color', 'hex' => '#888888', 'swatch_style' => 'spectrum', 'is_active' => true]]);
+
+        $html = $this->type->getFormattedOptionValue('7');
+
+        $this->assertStringContainsString('background-color:#888888;background-image:conic-gradient(red, blue)', $html);
     }
 
     public function testFormattedValueWithoutALinkedColorIsJustTheName(): void

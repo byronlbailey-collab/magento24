@@ -79,4 +79,14 @@
             </argument>
         </arguments>
     </type>
+    <type name="Amerimark\ColorOption\Model\SwatchStyles">
+        <arguments>
+            <argument name="styles" xsi:type="array">
+                <item name="spectrum" xsi:type="array">
+                    <item name="label" xsi:type="string">Full spectrum</item>
+                    <item name="image" xsi:type="string">conic-gradient(#ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

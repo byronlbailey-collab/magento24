@@ -8,7 +8,7 @@
             title="Click to open the color picker"
             class="amerimark-color-swatch"
             style="width: 38px; height: 38px; flex: 0 0 auto; padding: 0; border: 2px solid #adadad; border-radius: 50%; cursor: pointer;"
-            data-bind="afterRender: initPicker, style: {backgroundColor: value() || '#ffffff'}, disable: disabled"></button>
+            data-bind="afterRender: initPicker, style: {backgroundColor: value() || '#ffffff', backgroundImage: swatchImage() || 'none'}, disable: disabled"></button>
     <input class="admin__control-text"
            type="text"
            maxlength="7"

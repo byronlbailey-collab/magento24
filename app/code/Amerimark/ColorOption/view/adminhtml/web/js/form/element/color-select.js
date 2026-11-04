@@ -16,7 +16,8 @@ define([
             elementTmpl: 'Amerimark_ColorOption/form/element/color-select',
             colorsByGroup: {},
             groupId: '',
-            hex: ''
+            hex: '',
+            image: ''
         },
 
         /**
@@ -30,7 +31,7 @@ define([
             });
             // every color is listed at first so that a saved value is never discarded while the form loads
             this.options = all;
-            this._super().observe(['groupId', 'hex']);
+            this._super().observe(['groupId', 'hex', 'image']);
 
             return this;
         },
@@ -81,6 +82,7 @@ define([
             var option = value === '' || value == null ? null : this.getOption(value);
 
             this.hex(option ? option.hex : '');
+            this.image(option ? option.image : '');
         }
     });
 });

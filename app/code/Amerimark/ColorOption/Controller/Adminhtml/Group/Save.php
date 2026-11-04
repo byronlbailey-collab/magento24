@@ -100,6 +100,7 @@ class Save extends AbstractGroup implements HttpPostActionInterface
                 'item_id' => (int)($row['item_id'] ?? 0),
                 'name' => $name,
                 'hex' => $hex,
+                'swatch_style' => (string)($row['swatch_style'] ?? ''),
                 'pms' => trim((string)($row['pms'] ?? '')),
                 'comment' => trim((string)($row['comment'] ?? '')),
                 'sort_order' => (int)($row['sort_order'] ?? 0),

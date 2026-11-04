@@ -43,6 +43,9 @@ define([
     return Abstract.extend({
         defaults: {
             elementTmpl: 'Amerimark_ColorOption/form/element/color-picker',
+            swatchImages: {},
+            swatchStyle: 'solid',
+            swatchImage: '',
             listens: {
                 value: 'syncChannels'
             }
@@ -52,7 +55,7 @@ define([
          * @inheritdoc
          */
         initObservable: function () {
-            this._super().observe(['r', 'g', 'b']);
+            this._super().observe(['r', 'g', 'b', 'swatchStyle', 'swatchImage']);
 
             return this;
         },
@@ -63,8 +66,23 @@ define([
         initialize: function () {
             this._super();
             this.syncChannels(this.value());
+            // the style field is this field's sibling in the same row
+            this.setLinks({
+                swatchStyle: this.provider + ':' + String(this.dataScope).replace(/\.hex$/, '.swatch_style')
+            }, 'imports');
+            this.swatchStyle.subscribe(this.updateSwatchImage.bind(this));
+            this.updateSwatchImage(this.swatchStyle());
 
             return this;
+        },
+
+        /**
+         * Paint the swatch button the way shoppers will see it.
+         *
+         * @param {String} style
+         */
+        updateSwatchImage: function (style) {
+            this.swatchImage(this.swatchImages[style] || 'none');
         },
 
         /**

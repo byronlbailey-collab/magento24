@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Amerimark\ColorOption\ViewModel;
 
 use Amerimark\ColorOption\Model\OptionColors;
+use Amerimark\ColorOption\Model\SwatchStyles;
 use Magento\Catalog\Model\Product\Option;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
@@ -17,9 +18,12 @@ class Swatches implements ArgumentInterface
 {
     /**
      * @param OptionColors $colors
+     * @param SwatchStyles $swatchStyles
      */
-    public function __construct(private readonly OptionColors $colors)
-    {
+    public function __construct(
+        private readonly OptionColors $colors,
+        private readonly SwatchStyles $swatchStyles
+    ) {
     }
 
     /**
@@ -27,7 +31,8 @@ class Swatches implements ArgumentInterface
      * values that are not linked to a color.
      *
      * @param Option $option
-     * @return array[] each: value (option_type_id), name, hex, source (the core value object)
+     * @return array[] each: value (option_type_id), name, hex, style (swatch style code), css (inline CSS that paints
+     *     the circle), source (the core value object)
      */
     public function getSwatches(Option $option): array
     {
@@ -46,6 +51,8 @@ class Swatches implements ArgumentInterface
                 'value' => (int)$value->getOptionTypeId(),
                 'name' => $color['name'],
                 'hex' => $color['hex'],
+                'style' => $color['swatch_style'],
+                'css' => $this->swatchStyles->getInlineCss($color['swatch_style'], $color['hex']),
                 'source' => $value,
             ];
         }

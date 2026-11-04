@@ -135,6 +135,27 @@
                         </validation>
                     </settings>
                 </field>
+                <field name="swatch_style" sortOrder="15" formElement="select">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">solid</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Swatch Style</label>
+                        <tooltip>
+                            <description translate="true">How the circle is drawn for shoppers. For any style other than "Solid color", the color on the left is the fallback shown where the style cannot be drawn (for example in some email clients).</description>
+                        </tooltip>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options class="Amerimark\ColorOption\Model\Config\Source\SwatchStyle"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
                 <field name="name" sortOrder="20" formElement="input">
                     <settings>
                         <dataType>text</dataType>

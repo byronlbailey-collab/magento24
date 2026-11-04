@@ -11,6 +11,7 @@ type CustomizableColorValue @doc(description: "A color the shopper can choose fo
     sku: String @doc(description: "The Stock Keeping Unit for this color.")
     title: String @doc(description: "The name of the color.")
     sort_order: Int @doc(description: "The order in which the color is displayed.")
-    hex: String @doc(description: "The display color as #RRGGBB.")
+    hex: String @doc(description: "The display color as #RRGGBB. For swatch styles other than solid it is the fallback color.")
+    swatch_style: String @doc(description: "How the swatch is drawn: solid, spectrum, or another style added by the store.")
     uid: ID! @doc(description: "The unique ID for a `CustomizableColorValue` object. Use it as the value of the customizable option when adding the product to the cart.") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\CustomizableSelectedOptionValueUid")
 }

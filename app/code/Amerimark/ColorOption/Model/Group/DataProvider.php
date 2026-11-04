@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Amerimark\ColorOption\Model\Group;
 
 use Amerimark\ColorOption\Model\ResourceModel\Group as GroupResource;
+use Amerimark\ColorOption\Model\SwatchStyles;
 use Amerimark\ColorOption\Model\ResourceModel\Group\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
@@ -38,11 +39,25 @@ class DataProvider extends AbstractDataProvider
         CollectionFactory $collectionFactory,
         private readonly GroupResource $groupResource,
         private readonly DataPersistorInterface $dataPersistor,
+        private readonly SwatchStyles $swatchStyles,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->collection = $collectionFactory->create();
+    }
+
+    /**
+     * Gives the color field what it needs to preview each swatch style.
+     *
+     * @inheritdoc
+     */
+    public function getMeta()
+    {
+        $meta = parent::getMeta();
+        $meta['colors']['children']['items']['children']['record']['children']['hex']['arguments']['data']['config']
+            ['swatchImages'] = $this->swatchStyles->getImageMap();
+        return $meta;
     }
 
     /**

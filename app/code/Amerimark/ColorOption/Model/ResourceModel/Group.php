@@ -7,12 +7,27 @@ declare(strict_types=1);
 namespace Amerimark\ColorOption\Model\ResourceModel;
 
 use Amerimark\ColorOption\Model\HexColor;
+use Amerimark\ColorOption\Model\SwatchStyles;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\Context;
 
 class Group extends AbstractDb
 {
+    /**
+     * @param Context $context
+     * @param SwatchStyles $swatchStyles
+     * @param string|null $connectionName
+     */
+    public function __construct(
+        Context $context,
+        private readonly SwatchStyles $swatchStyles,
+        $connectionName = null
+    ) {
+        parent::__construct($context, $connectionName);
+    }
+
     public const TABLE = 'amerimark_color_group';
     public const ITEM_TABLE = 'amerimark_color_group_item';
     public const VALUE_MAP_TABLE = 'amerimark_color_option_value';
@@ -150,6 +165,7 @@ class Group extends AbstractDb
                 }
             }
             $pms = trim((string)($row['pms'] ?? ''));
+            $style = $this->swatchStyles->normalize($row['swatch_style'] ?? null);
             $comment = trim((string)($row['comment'] ?? ''));
             $rows[] = [
                 'item_id' => $isExisting ? $itemId : 0,
@@ -157,6 +173,7 @@ class Group extends AbstractDb
                     'group_id' => $groupId,
                     'name' => $name,
                     'hex' => $hex,
+                    'swatch_style' => $style,
                     'pms' => $pms !== '' ? mb_substr($pms, 0, 64) : null,
                     'comment' => $comment !== '' ? $comment : null,
                     'sort_order' => max(0, (int)($row['sort_order'] ?? 0)),

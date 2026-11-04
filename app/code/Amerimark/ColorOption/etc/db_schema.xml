@@ -19,7 +19,8 @@
         <column xsi:type="int" name="item_id" unsigned="true" nullable="false" identity="true" comment="Color ID"/>
         <column xsi:type="int" name="group_id" unsigned="true" nullable="false" comment="Group ID"/>
         <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Color name (shown to shoppers)"/>
-        <column xsi:type="varchar" name="hex" nullable="false" length="7" comment="Display color #RRGGBB"/>
+        <column xsi:type="varchar" name="hex" nullable="false" length="7" comment="Display color #RRGGBB (fallback where the style cannot be drawn)"/>
+        <column xsi:type="varchar" name="swatch_style" nullable="false" length="32" default="solid" comment="How the swatch is drawn (SwatchStyles registry)"/>
         <column xsi:type="varchar" name="pms" nullable="true" length="64" comment="PMS (Pantone) reference, staff only"/>
         <column xsi:type="text" name="comment" nullable="true" comment="Staff-only comment"/>
         <column xsi:type="int" name="sort_order" unsigned="true" nullable="false" default="0" comment="Sort Order"/>

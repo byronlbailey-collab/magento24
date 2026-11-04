@@ -10,7 +10,7 @@ use Amerimark\ColorOption\Model\OptionColors;
 use Magento\CatalogGraphQl\Model\Resolver\Product\Options;
 
 /**
- * Gives the colors of a Color option their display color, and leaves out colors staff have disabled (they cannot be
+ * Gives the colors of a Color option their display color and swatch style, and leaves out colors staff have disabled (they cannot be
  * bought). The title of each value is the color's name.
  */
 class OptionsResolverPlugin
@@ -51,6 +51,7 @@ class OptionsResolverPlugin
                     continue;
                 }
                 $row['hex'] = $color['hex'];
+                $row['swatch_style'] = $color['swatch_style'];
                 $values[] = $row;
             }
             $result[$key]['value'] = $values;

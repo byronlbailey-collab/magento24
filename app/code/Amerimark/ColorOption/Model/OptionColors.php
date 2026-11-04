@@ -19,9 +19,12 @@ class OptionColors
 
     /**
      * @param ResourceConnection $resource
+     * @param SwatchStyles $swatchStyles
      */
-    public function __construct(private readonly ResourceConnection $resource)
-    {
+    public function __construct(
+        private readonly ResourceConnection $resource,
+        private readonly SwatchStyles $swatchStyles
+    ) {
     }
 
     /**
@@ -71,10 +74,11 @@ class OptionColors
     }
 
     /**
-     * What the storefront needs to draw each value of a color option: option_type_id => [name, hex, is_active].
+     * What the storefront needs to draw each value of a color option: option_type_id => [name, hex, swatch_style,
+     * is_active].
      *
      * @param int[] $valueIds
-     * @return array<int, array{name: string, hex: string, is_active: bool}>
+     * @return array<int, array{name: string, hex: string, swatch_style: string, is_active: bool}>
      */
     public function getSwatchData(array $valueIds): array
     {
@@ -89,7 +93,7 @@ class OptionColors
                 ->join(
                     ['i' => $this->resource->getTableName(GroupResource::ITEM_TABLE)],
                     'i.item_id = m.color_id',
-                    ['name', 'hex', 'is_active']
+                    ['name', 'hex', 'swatch_style', 'is_active']
                 )
                 ->where('m.option_type_id IN (?)', $valueIds)
         );
@@ -98,6 +102,7 @@ class OptionColors
             $result[(int)$row['option_type_id']] = [
                 'name' => (string)$row['name'],
                 'hex' => (string)$row['hex'],
+                'swatch_style' => $this->swatchStyles->normalize($row['swatch_style']),
                 'is_active' => (bool)$row['is_active'],
             ];
         }
@@ -204,7 +209,7 @@ class OptionColors
             $connection->select()
                 ->from(
                     $this->resource->getTableName(GroupResource::ITEM_TABLE),
-                    ['item_id', 'group_id', 'name', 'hex', 'is_active', 'comment']
+                    ['item_id', 'group_id', 'name', 'hex', 'swatch_style', 'is_active', 'comment']
                 )
                 ->order(['sort_order ASC', 'item_id ASC'])
         );
@@ -218,6 +223,7 @@ class OptionColors
                 'value' => (int)$item['item_id'],
                 'label' => $item['name'] . ($item['is_active'] ? '' : ' (' . __('disabled') . ')'),
                 'hex' => $item['hex'],
+                'image' => $this->swatchStyles->getImage($item['swatch_style']),
             ];
         }
         return ['groups' => $groups, 'colors' => $colors, 'comments' => $comments];

@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Amerimark\ColorOption\Model\Product\Option\Type;
 
 use Amerimark\ColorOption\Model\OptionColors;
+use Amerimark\ColorOption\Model\SwatchStyles;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Escaper;
@@ -29,6 +30,7 @@ class ColorSwatch extends \Magento\Catalog\Model\Product\Option\Type\Select
      * @param StringUtils $string
      * @param Escaper $escaper
      * @param OptionColors $colors
+     * @param SwatchStyles $swatchStyles
      * @param array $data
      * @param array $singleSelectionTypes
      */
@@ -38,6 +40,7 @@ class ColorSwatch extends \Magento\Catalog\Model\Product\Option\Type\Select
         StringUtils $string,
         Escaper $escaper,
         private readonly OptionColors $colors,
+        private readonly SwatchStyles $swatchStyles,
         array $data = [],
         array $singleSelectionTypes = []
     ) {
@@ -106,11 +109,9 @@ class ColorSwatch extends \Magento\Catalog\Model\Product\Option\Type\Select
         if ($color === null) {
             return $this->_escaper->escapeHtml($name);
         }
-        $style = sprintf(
-            'display:inline-block;width:18px;height:18px;margin-right:8px;vertical-align:middle;'
-            . 'border-radius:50%%;border:1px solid #999;background-color:%s',
-            $color['hex']
-        );
+        $style = 'display:inline-block;width:18px;height:18px;margin-right:8px;vertical-align:middle;'
+            . 'border-radius:50%;border:1px solid #999;'
+            . $this->swatchStyles->getInlineCss($color['swatch_style'], $color['hex']);
         return '<span class="amerimark-color-option">'
             . '<span class="amerimark-color-option__dot" style="' . $this->_escaper->escapeHtmlAttr($style) . '"></span>'
             . '<span class="amerimark-color-option__name">' . $this->_escaper->escapeHtml($name) . '</span>'

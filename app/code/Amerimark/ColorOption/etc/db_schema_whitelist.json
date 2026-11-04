@@ -20,7 +20,8 @@
             "pms": true,
             "comment": true,
             "sort_order": true,
-            "is_active": true
+            "is_active": true,
+            "swatch_style": true
         },
         "index": {
             "AMERIMARK_COLOR_GROUP_ITEM_GROUP_ID_SORT_ORDER": true

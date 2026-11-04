@@ -45,7 +45,8 @@ $selected = (int)$block->getPreconfiguredValue($option);
                                price="<?= $escaper->escapeHtmlAttr($block->getCurrencyByStore($value)) ?>"
                                aria-label="<?= $escaper->escapeHtmlAttr($tip) ?>"
                                <?= $selected === (int)$swatch['value'] ? 'checked="checked"' : '' ?>/>
-                        <span class="colorswatch-dot" style="background-color: <?= $escaper->escapeHtmlAttr($swatch['hex']) ?>"></span>
+                        <span class="colorswatch-dot" data-swatch-style="<?= $escaper->escapeHtmlAttr($swatch['style']) ?>"
+                              style="<?= $escaper->escapeHtmlAttr($swatch['css']) ?>"></span>
                     </label>
                 <?php endforeach; ?>
             </div>
