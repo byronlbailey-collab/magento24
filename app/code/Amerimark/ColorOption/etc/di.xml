@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="amerimark_coloroption_group_listing_data_source" xsi:type="string">Amerimark\ColorOption\Model\ResourceModel\Group\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\ColorOption\Model\ResourceModel\Group\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">amerimark_color_group</argument>
+            <argument name="resourceModel" xsi:type="string">Amerimark\ColorOption\Model\ResourceModel\Group</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <arguments>
+            <argument name="optionTypesToGroups" xsi:type="array">
+                <item name="color_swatch" xsi:type="string">select</item>
+            </argument>
+        </arguments>
+        <plugin name="amerimark_coloroption_values"
+                type="Amerimark\ColorOption\Plugin\Catalog\OptionColorValuesPlugin"/>
+        <plugin name="amerimark_coloroption_group_factory"
+                type="Amerimark\ColorOption\Plugin\Catalog\OptionGroupFactoryPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Type\Select">
+        <arguments>
+            <argument name="singleSelectionTypes" xsi:type="array">
+                <item name="color_swatch" xsi:type="string">color_swatch</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Validator\Pool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="color_swatch" xsi:type="object">Amerimark\ColorOption\Model\Product\Option\Validator\ColorSwatch</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Option\Value">
+        <plugin name="amerimark_coloroption_value_map"
+                type="Amerimark\ColorOption\Plugin\Catalog\ResourceModel\ColorValueMapPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions">
+        <plugin name="amerimark_coloroption_custom_options_form"
+                type="Amerimark\ColorOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Block\Product\View\Options">
+        <plugin name="amerimark_coloroption_group_of_option"
+                type="Amerimark\ColorOption\Plugin\Catalog\Block\OptionsGroupPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="amerimark_coloroption_availability"
+                type="Amerimark\ColorOption\Plugin\Quote\QuoteColorAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\QuoteValidator">
+        <plugin name="amerimark_coloroption_submit_guard"
+                type="Amerimark\ColorOption\Plugin\Quote\QuoteColorAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Checkout\Model\Session">
+        <plugin name="amerimark_coloroption_session_quote_check"
+                type="Amerimark\ColorOption\Plugin\Checkout\SessionQuoteColorCheckPlugin"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\DefaultItem">
+        <plugin name="amerimark_coloroption_minicart_html"
+                type="Amerimark\ColorOption\Plugin\Checkout\MiniCartOptionHtmlPlugin"/>
+    </type>
+    <!-- Global (not graphql area) file: an area file would replace, not extend, the core map. -->
+    <type name="Magento\QuoteGraphQl\Model\CartItem\DataProvider\CustomizableOptionValue\Composite">
+        <arguments>
+            <argument name="customizableOptionValues" xsi:type="array">
+                <item name="color_swatch" xsi:type="string">Amerimark\ColorOption\Model\GraphQl\CartColorValue</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\ColorOption\Model\SwatchStyles">
+        <arguments>
+            <argument name="styles" xsi:type="array">
+                <item name="spectrum" xsi:type="array">
+                    <item name="label" xsi:type="string">Full spectrum</item>
+                    <item name="image" xsi:type="string">conic-gradient(#ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

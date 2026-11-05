@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\GraphQl\Schema\Type\Entity\DefaultMapper">
+        <arguments>
+            <argument name="map" xsi:type="array">
+                <item name="customizable_options" xsi:type="array">
+                    <item name="image_group" xsi:type="string">CustomizableImageGroupOption</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogGraphQl\Model\Resolver\Product\Options">
+        <plugin name="amerimark_imageoption_graphql_options"
+                type="Amerimark\ImageOption\Plugin\CatalogGraphQl\OptionsResolverPlugin"/>
+    </type>
+    <type name="Magento\WishlistGraphQl\Model\WishlistItem\DataProvider\CustomizableOptionValue\Composite">
+        <arguments>
+            <argument name="customizableOptionValues" xsi:type="array">
+                <item name="image_group" xsi:type="string">Amerimark\ImageOption\Model\GraphQl\WishlistImageGroupValue</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

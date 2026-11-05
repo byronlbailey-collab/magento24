@@ -1,0 +1,13 @@
+# Copyright Amerimark. All rights reserved.
+
+enum PriceTypeEnum {
+    FXLINE @doc(description: "A fixed amount charged once per cart line, regardless of quantity (Amerimark FixedLine).")
+}
+
+type CartItemPrices {
+    fixed_line_fee: Money @doc(description: "The FixedLine amount charged once for this cart line, excluding tax. It is included in `row_total` but not in `price`.")
+}
+
+type OrderItemPrices {
+    fixed_line_fee: Money @doc(description: "The FixedLine amount charged once for this order line, excluding tax. It is included in `row_total` but not in `price`.")
+}

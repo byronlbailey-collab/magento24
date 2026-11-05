@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote_item">
+        <column xsi:type="decimal" name="fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Incl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Incl Tax"/>
+    </table>
+    <table name="quote_address_item">
+        <column xsi:type="decimal" name="fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Incl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Incl Tax"/>
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="decimal" name="fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Excl Tax"/>
+        <column xsi:type="decimal" name="fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="FixedLine Fee Incl Tax"/>
+        <column xsi:type="decimal" name="base_fxline_amount_incl_tax" scale="4" precision="20" unsigned="false" nullable="true" comment="Base FixedLine Fee Incl Tax"/>
+    </table>
+</schema>

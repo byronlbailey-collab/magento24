@@ -1,0 +1,27 @@
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<div class="amerimark-color-field" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 250px;">
+    <button type="button"
+            title="Click to open the color picker"
+            class="amerimark-color-swatch"
+            style="width: 38px; height: 38px; flex: 0 0 auto; padding: 0; border: 2px solid #adadad; border-radius: 50%; cursor: pointer;"
+            data-bind="afterRender: initPicker, style: {backgroundColor: value() || '#ffffff', backgroundImage: swatchImage() || 'none'}, disable: disabled"></button>
+    <input class="admin__control-text"
+           type="text"
+           maxlength="7"
+           placeholder="#RRGGBB"
+           style="width: 92px;"
+           data-bind="value: value, valueUpdate: 'afterkeydown', event: {blur: onHexBlur}, attr: {name: inputName, id: uid, 'aria-label': 'Hex color'}, disable: disabled"/>
+    <span style="white-space: nowrap;">
+        R <input class="admin__control-text" type="number" min="0" max="255" style="width: 58px;" aria-label="Red"
+                 data-bind="value: r, event: {change: onChannelChange}, disable: disabled"/>
+        G <input class="admin__control-text" type="number" min="0" max="255" style="width: 58px;" aria-label="Green"
+                 data-bind="value: g, event: {change: onChannelChange}, disable: disabled"/>
+        B <input class="admin__control-text" type="number" min="0" max="255" style="width: 58px;" aria-label="Blue"
+                 data-bind="value: b, event: {change: onChannelChange}, disable: disabled"/>
+    </span>
+    <label class="admin__field-error" style="flex-basis: 100%;" data-bind="visible: error, text: error, attr: {for: uid}"></label>
+</div>

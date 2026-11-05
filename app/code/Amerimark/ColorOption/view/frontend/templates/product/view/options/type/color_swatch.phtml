@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+
+/** @var \Magento\Catalog\Block\Product\View\Options\Type\Select\Checkable $block */
+/** @var \Amerimark\ColorOption\ViewModel\Swatches $viewModel */
+/** @var \Magento\Framework\Escaper $escaper */
+$viewModel = $block->getData('view_model');
+$option = $block->getOption();
+if (!$option) {
+    return;
+}
+$optionId = (int)$option->getId();
+$required = (bool)$option->getIsRequire();
+$swatches = $viewModel->getSwatches($option);
+$selected = (int)$block->getPreconfiguredValue($option);
+?>
+<div class="field colorswatch-option<?= $required ? ' required' : '' ?>"
+     data-role="amerimark-color-option"
+     data-mage-init='{"Amerimark_ColorOption/js/color-swatches": {"required": <?= $required ? 'true' : 'false' ?>}}'>
+    <label class="label" id="options_<?= $optionId ?>_label">
+        <span><?= $escaper->escapeHtml($option->getTitle()) ?></span>
+    </label>
+    <div class="control">
+        <?php if ($swatches): ?>
+            <div class="colorswatch-list" role="radiogroup" aria-labelledby="options_<?= $optionId ?>_label">
+                <?php foreach ($swatches as $index => $swatch): ?>
+                    <?php
+                    $value = $swatch['source'];
+                    $priceText = trim((string)preg_replace('/\s+/', ' ', strip_tags($block->formatPrice($value))));
+                    $tip = trim($swatch['name'] . ' ' . $priceText);
+                    $inputId = 'options_' . $optionId . '_' . $swatch['value'];
+                    ?>
+                    <label class="colorswatch" for="<?= $escaper->escapeHtmlAttr($inputId) ?>"
+                           data-name="<?= $escaper->escapeHtmlAttr($swatch['name']) ?>"
+                           data-price="<?= $escaper->escapeHtmlAttr($priceText) ?>"
+                           title="<?= $escaper->escapeHtmlAttr($tip) ?>">
+                        <input type="radio"
+                               class="colorswatch-input radio product-custom-option<?= $required ? ' required' : '' ?>"
+                               name="options[<?= $optionId ?>]"
+                               id="<?= $escaper->escapeHtmlAttr($inputId) ?>"
+                               value="<?= (int)$swatch['value'] ?>"
+                               data-selector="options[<?= $optionId ?>]"
+                               price="<?= $escaper->escapeHtmlAttr($block->getCurrencyByStore($value)) ?>"
+                               aria-label="<?= $escaper->escapeHtmlAttr($tip) ?>"
+                               <?= $selected === (int)$swatch['value'] ? 'checked="checked"' : '' ?>/>
+                        <span class="colorswatch-dot" data-swatch-style="<?= $escaper->escapeHtmlAttr($swatch['style']) ?>"
+                              style="<?= $escaper->escapeHtmlAttr($swatch['css']) ?>"></span>
+                    </label>
+                <?php endforeach; ?>
+            </div>
+            <div class="colorswatch-status" data-role="status" aria-live="polite">
+                <span class="colorswatch-status__text" data-role="status-text"></span>
+                <?php if (!$required): ?>
+                    <button type="button" class="action colorswatch-clear" data-role="clear" hidden>
+                        <?= $escaper->escapeHtml(__('Clear')) ?>
+                    </button>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <p class="colorswatch-empty note"><?= $escaper->escapeHtml(__('No colors are available for this option right now.')) ?></p>
+        <?php endif; ?>
+    </div>
+</div>

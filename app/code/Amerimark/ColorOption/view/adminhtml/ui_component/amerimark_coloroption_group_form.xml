@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">amerimark_coloroption_group_form.amerimark_coloroption_group_form_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back" class="Amerimark\ColorOption\Block\Adminhtml\Group\Edit\BackButton"/>
+            <button name="delete" class="Amerimark\ColorOption\Block\Adminhtml\Group\Edit\DeleteButton"/>
+            <button name="save_and_continue" class="Amerimark\ColorOption\Block\Adminhtml\Group\Edit\SaveAndContinueButton"/>
+            <button name="save" class="Amerimark\ColorOption\Block\Adminhtml\Group\Edit\SaveButton"/>
+        </buttons>
+        <namespace>amerimark_coloroption_group_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>amerimark_coloroption_group_form.amerimark_coloroption_group_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="amerimark_coloroption_group_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="amerimark_coloroption/group/save"/>
+        </settings>
+        <aclResource>Amerimark_ColorOption::groups</aclResource>
+        <dataProvider class="Amerimark\ColorOption\Model\Group\DataProvider" name="amerimark_coloroption_group_form_data_source">
+            <settings>
+                <requestFieldName>group_id</requestFieldName>
+                <primaryFieldName>group_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">Group</label>
+        </settings>
+        <field name="group_id" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="is_active" sortOrder="10" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Active</label>
+                <tooltip>
+                    <description translate="true">Inactive groups are hidden from shoppers: products that use them cannot be bought until the group is active again.</description>
+                </tooltip>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="name" sortOrder="20" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Group Name</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="colors">
+        <settings>
+            <label translate="true">Colors</label>
+            <collapsible>false</collapsible>
+        </settings>
+        <dynamicRows name="items" component="Magento_Ui/js/dynamic-rows/dynamic-rows">
+            <settings>
+                <addButtonLabel translate="true">Add Color</addButtonLabel>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                </additionalClasses>
+                <componentType>dynamicRows</componentType>
+                <recordTemplate>record</recordTemplate>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">true</param>
+                    <param name="template" xsi:type="string">ui/dynamic-rows/cells/dnd</param>
+                </dndConfig>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                        <item name="componentType" xsi:type="string">container</item>
+                        <item name="positionProvider" xsi:type="string">sort_order</item>
+                    </item>
+                </argument>
+                <field name="item_id" formElement="input">
+                    <settings>
+                        <dataType>text</dataType>
+                        <visible>false</visible>
+                    </settings>
+                </field>
+                <field name="hex" sortOrder="10" formElement="input" component="Amerimark_ColorOption/js/form/element/color-picker">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">#C8102E</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <elementTmpl>Amerimark_ColorOption/form/element/color-picker</elementTmpl>
+                        <dataType>text</dataType>
+                        <label translate="true">Color</label>
+                        <notice translate="true">Type a hex or RGB value, or click the swatch for the picker.</notice>
+                        <validation>
+                            <rule name="required-entry" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                </field>
+                <field name="swatch_style" sortOrder="15" formElement="select">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="string">solid</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Swatch Style</label>
+                        <tooltip>
+                            <description translate="true">How the circle is drawn for shoppers. For any style other than "Solid color", the color on the left is the fallback shown where the style cannot be drawn (for example in some email clients).</description>
+                        </tooltip>
+                    </settings>
+                    <formElements>
+                        <select>
+                            <settings>
+                                <options class="Amerimark\ColorOption\Model\Config\Source\SwatchStyle"/>
+                            </settings>
+                        </select>
+                    </formElements>
+                </field>
+                <field name="name" sortOrder="20" formElement="input">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Color Name</label>
+                        <tooltip>
+                            <description translate="true">Shown to shoppers when they hover over or choose the color. A group may have several colors with the same name, but a product option may use each name only once.</description>
+                        </tooltip>
+                        <validation>
+                            <rule name="required-entry" xsi:type="boolean">true</rule>
+                        </validation>
+                    </settings>
+                </field>
+                <field name="pms" sortOrder="30" formElement="input">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">PMS Number</label>
+                        <tooltip>
+                            <description translate="true">Pantone reference for production. Staff only: never shown to shoppers.</description>
+                        </tooltip>
+                    </settings>
+                </field>
+                <field name="comment" sortOrder="40" formElement="textarea">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label translate="true">Comment</label>
+                        <tooltip>
+                            <description translate="true">Notes for staff setting up colors and products. Never shown to shoppers.</description>
+                        </tooltip>
+                    </settings>
+                </field>
+                <field name="sort_order" sortOrder="50" formElement="input">
+                    <settings>
+                        <dataType>number</dataType>
+                        <visible>false</visible>
+                    </settings>
+                </field>
+                <field name="is_active" sortOrder="60" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="default" xsi:type="number">1</item>
+                        </item>
+                    </argument>
+                    <settings>
+                        <dataType>boolean</dataType>
+                        <label translate="true">Active</label>
+                    </settings>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <valueMap>
+                                    <map name="false" xsi:type="number">0</map>
+                                    <map name="true" xsi:type="number">1</map>
+                                </valueMap>
+                                <prefer>toggle</prefer>
+                            </settings>
+                        </checkbox>
+                    </formElements>
+                </field>
+                <actionDelete sortOrder="70">
+                    <settings>
+                        <dataType>text</dataType>
+                        <label/>
+                        <componentType>actionDelete</componentType>
+                    </settings>
+                </actionDelete>
+            </container>
+        </dynamicRows>
+    </fieldset>
+</form>

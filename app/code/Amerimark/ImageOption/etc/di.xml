@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Amerimark\ImageOption\ImageUpload" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">amerimark/imageoption/tmp</argument>
+            <argument name="basePath" xsi:type="string">amerimark/imageoption</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+            <argument name="allowedMimeTypes" xsi:type="array">
+                <item name="jpg" xsi:type="string">image/jpg</item>
+                <item name="jpeg" xsi:type="string">image/jpeg</item>
+                <item name="gif" xsi:type="string">image/gif</item>
+                <item name="png" xsi:type="string">image/png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Amerimark\ImageOption\Controller\Adminhtml\Group\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Amerimark\ImageOption\ImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\ImageOption\Controller\Adminhtml\Group\Save">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Amerimark\ImageOption\ImageUpload</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="amerimark_imageoption_group_listing_data_source" xsi:type="string">Amerimark\ImageOption\Model\ResourceModel\Group\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\ImageOption\Model\ResourceModel\Group\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">amerimark_image_group</argument>
+            <argument name="resourceModel" xsi:type="string">Amerimark\ImageOption\Model\ResourceModel\Group</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <arguments>
+            <argument name="optionGroups" xsi:type="array">
+                <item name="image_group" xsi:type="string">Amerimark\ImageOption\Model\Product\Option\Type\ImageGroup</item>
+            </argument>
+            <argument name="optionTypesToGroups" xsi:type="array">
+                <item name="image_group" xsi:type="string">image_group</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <plugin name="amerimark_imageoption_normalize"
+                type="Amerimark\ImageOption\Plugin\Catalog\OptionNormalizePlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Validator\Pool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+                <item name="image_group" xsi:type="object">Amerimark\ImageOption\Model\Product\Option\Validator\ImageGroup</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions">
+        <plugin name="amerimark_imageoption_custom_options_form"
+                type="Amerimark\ImageOption\Plugin\Catalog\Ui\CustomOptionsModifierPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="amerimark_imageoption_copy_uploads"
+                type="Amerimark\ImageOption\Plugin\Quote\CopyUploadsToOrderPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Type\AbstractType">
+        <plugin name="amerimark_imageoption_order_snapshot"
+                type="Amerimark\ImageOption\Plugin\Catalog\OrderOptionsSnapshotPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="amerimark_imageoption_availability"
+                type="Amerimark\ImageOption\Plugin\Quote\QuoteImageAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\QuoteValidator">
+        <plugin name="amerimark_imageoption_submit_guard"
+                type="Amerimark\ImageOption\Plugin\Quote\QuoteImageAvailabilityPlugin"/>
+    </type>
+    <type name="Magento\Checkout\Model\Session">
+        <plugin name="amerimark_imageoption_session_quote_check"
+                type="Amerimark\ImageOption\Plugin\Checkout\SessionQuoteImageCheckPlugin"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\DefaultItem">
+        <plugin name="amerimark_imageoption_minicart_html"
+                type="Amerimark\ImageOption\Plugin\Checkout\MiniCartOptionHtmlPlugin"/>
+    </type>
+    <type name="Magento\QuoteGraphQl\Model\CartItem\DataProvider\CustomizableOptionValue\Composite">
+        <arguments>
+            <argument name="customizableOptionValues" xsi:type="array">
+                <item name="image_group" xsi:type="string">Amerimark\ImageOption\Model\GraphQl\CartImageGroupValue</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

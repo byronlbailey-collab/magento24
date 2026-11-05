@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.options">
+            <!-- The core radio-option block gives us price formatting and the cart/wishlist preselection;
+                 the template draws the swatches. -->
+            <block class="Magento\Catalog\Block\Product\View\Options\Type\Select\Checkable"
+                   name="product.info.options.color_swatch" as="color_swatch"
+                   template="Amerimark_ColorOption::product/view/options/type/color_swatch.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Amerimark\ColorOption\ViewModel\Swatches</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

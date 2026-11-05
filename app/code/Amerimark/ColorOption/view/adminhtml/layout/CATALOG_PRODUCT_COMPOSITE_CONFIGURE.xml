@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <referenceBlock name="product.composite.fieldset.options">
+        <block class="Magento\Catalog\Block\Product\View\Options\Type\Select\Checkable"
+               name="product.composite.fieldset.options.color_swatch" as="color_swatch"
+               template="Amerimark_ColorOption::catalog/product/composite/color_swatch.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Amerimark\ColorOption\ViewModel\Swatches</argument>
+            </arguments>
+        </block>
+    </referenceBlock>
+</layout>

@@ -1,0 +1,16 @@
+{
+    "name": "amerimark/module-color-option",
+    "description": "Color Swatch custom option: shoppers pick from round swatches of an admin-managed color group.",
+    "type": "magento2-module",
+    "require": {
+        "php": "~8.3.0||~8.4.0||~8.5.0",
+        "magento/framework": "*",
+        "magento/module-backend": "*",
+        "magento/module-catalog": "*",
+        "magento/module-ui": "*"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {"Amerimark\\ColorOption\\": ""}
+    }
+}

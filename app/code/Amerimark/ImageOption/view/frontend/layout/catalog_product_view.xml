@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.options">
+            <block class="Amerimark\ImageOption\Block\Product\View\Options\ImageGroup"
+                   name="product.info.options.image_group" as="image_group"/>
+        </referenceBlock>
+    </body>
+</page>

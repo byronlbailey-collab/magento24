@@ -1,0 +1,16 @@
+{
+    "name": "amerimark/module-image-option",
+    "description": "Image Group custom option: shoppers pick an image from an admin-managed group (optionally upload their own) during add to cart.",
+    "type": "magento2-module",
+    "require": {
+        "php": "~8.3.0||~8.4.0||~8.5.0",
+        "magento/framework": "*",
+        "magento/module-backend": "*",
+        "magento/module-catalog": "*",
+        "magento/module-ui": "*"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {"Amerimark\\ImageOption\\": ""}
+    }
+}

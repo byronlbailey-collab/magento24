@@ -1,0 +1,42 @@
+{
+    "amerimark_image_group": {
+        "column": {
+            "group_id": true,
+            "name": true,
+            "is_active": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "amerimark_image_group_item": {
+        "column": {
+            "item_id": true,
+            "group_id": true,
+            "label": true,
+            "sku": true,
+            "image": true,
+            "sort_order": true,
+            "is_active": true
+        },
+        "index": {
+            "AMERIMARK_IMAGE_GROUP_ITEM_GROUP_ID_SORT_ORDER": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_487ED5751A858E18AA7DE7B15FE1E9CF": true
+        }
+    },
+    "catalog_product_option": {
+        "column": {
+            "image_group_id": true,
+            "image_allow_upload": true,
+            "image_upload_ext": true
+        },
+        "constraint": {
+            "CAT_PRD_OPT_IMAGE_GROUP_ID_AMERIMARK_IMAGE_GROUP_GROUP_ID": true
+        }
+    }
+}

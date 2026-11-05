@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Model\Config\Source\Product\Options\Price">
+        <plugin name="amerimark_fixedline_price_types"
+                type="Amerimark\FixedLine\Plugin\Catalog\Config\Source\PriceTypesPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option\Type\DefaultType">
+        <plugin name="amerimark_fixedline_option_price"
+                type="Amerimark\FixedLine\Plugin\Catalog\Option\Type\DefaultTypePlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="amerimark_fixedline_calc_row_total"
+                type="Amerimark\FixedLine\Plugin\Quote\Item\CalcRowTotalPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address\Item">
+        <plugin name="amerimark_fixedline_calc_row_total"
+                type="Amerimark\FixedLine\Plugin\Quote\Item\CalcRowTotalPlugin"/>
+    </type>
+    <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
+        <plugin name="amerimark_fixedline_map_fee_items"
+                type="Amerimark\FixedLine\Plugin\Tax\MapFeeItemsPlugin"/>
+        <plugin name="amerimark_fixedline_update_item_fee_info"
+                type="Amerimark\FixedLine\Plugin\Tax\UpdateItemFeeInfoPlugin"/>
+    </type>
+    <type name="Magento\Tax\Api\TaxCalculationInterface">
+        <plugin name="amerimark_fixedline_merge_fee_details"
+                type="Amerimark\FixedLine\Plugin\Tax\MergeFeeDetailsPlugin"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Utility">
+        <plugin name="amerimark_fixedline_min_fix_round"
+                type="Amerimark\FixedLine\Plugin\SalesRule\MinFixRoundPlugin"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Rule\Action\Discount\BuyXGetY">
+        <plugin name="amerimark_fixedline_buyxgety_exclude_fee"
+                type="Amerimark\FixedLine\Plugin\SalesRule\BuyXGetYExcludeFeePlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="amerimark_fixedline_to_order_item"
+                type="Amerimark\FixedLine\Plugin\Quote\Item\ToOrderItemPlugin"/>
+    </type>
+    <type name="Magento\Sales\Block\Order\Email\Items\DefaultItems">
+        <plugin name="amerimark_fixedline_email_item_price"
+                type="Amerimark\FixedLine\Plugin\Sales\EmailItemPricePlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Indexer\Price\BasePriceModifier">
+        <arguments>
+            <argument name="priceModifiers" xsi:type="array">
+                <item name="customOptionPriceModifier" xsi:type="object">Amerimark\FixedLine\Model\ResourceModel\Product\Indexer\Price\CustomOptionPriceModifier</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amerimark\FixedLine\Model\ResourceModel\Product\Indexer\Price\CustomOptionPriceModifier">
+        <arguments>
+            <argument name="tableStrategy" xsi:type="object">Magento\Catalog\Model\ResourceModel\Product\Indexer\TemporaryTableStrategy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Pricing\Price\CustomOptionPriceCalculator">
+        <plugin name="amerimark_fixedline_option_price_calculator"
+                type="Amerimark\FixedLine\Plugin\Catalog\Pricing\CustomOptionPriceCalculatorPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Pricing\Price\CustomOptionPrice">
+        <plugin name="amerimark_fixedline_option_price_range"
+                type="Amerimark\FixedLine\Plugin\Catalog\Pricing\CustomOptionPricePlugin"/>
+    </type>
+    <type name="Magento\Catalog\Block\Product\View\Options">
+        <plugin name="amerimark_fixedline_options_json_config"
+                type="Amerimark\FixedLine\Plugin\Catalog\Block\OptionsJsonConfigPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Block\Product\View\Options\AbstractOptions">
+        <plugin name="amerimark_fixedline_option_price_label"
+                type="Amerimark\FixedLine\Plugin\Catalog\Block\OptionPriceLabelPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Helper\Product\Configuration">
+        <plugin name="amerimark_fixedline_cart_option_labels"
+                type="Amerimark\FixedLine\Plugin\Catalog\Helper\ConfigurationPlugin"/>
+    </type>
+    <type name="Magento\Weee\Block\Item\Price\Renderer">
+        <plugin name="amerimark_fixedline_weee_unit_price"
+                type="Amerimark\FixedLine\Plugin\Weee\ItemPriceRendererPlugin"/>
+    </type>
+    <type name="Magento\Checkout\Helper\Data">
+        <plugin name="amerimark_fixedline_checkout_base_price_incl_tax"
+                type="Amerimark\FixedLine\Plugin\Checkout\HelperDataPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Option">
+        <plugin name="amerimark_fixedline_option_regular_price"
+                type="Amerimark\FixedLine\Plugin\Catalog\OptionRegularPricePlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Cart\Totals\ItemConverter">
+        <plugin name="amerimark_fixedline_totals_item_fee"
+                type="Amerimark\FixedLine\Plugin\Quote\Cart\TotalsItemConverterPlugin"/>
+    </type>
+    <type name="Magento\Sales\Api\OrderRepositoryInterface">
+        <plugin name="amerimark_fixedline_order_item_fee"
+                type="Amerimark\FixedLine\Plugin\Sales\OrderItemExtensionPlugin"/>
+    </type>
+    <type name="Magento\Sales\Api\OrderItemRepositoryInterface">
+        <plugin name="amerimark_fixedline_order_item_repo_fee"
+                type="Amerimark\FixedLine\Plugin\Sales\OrderItemExtensionPlugin"/>
+    </type>
+    <type name="Magento\QuoteGraphQl\Model\Resolver\CartItemPrices">
+        <plugin name="amerimark_fixedline_cart_item_prices"
+                type="Amerimark\FixedLine\Plugin\QuoteGraphQl\CartItemPricesPlugin"/>
+    </type>
+    <type name="Magento\SalesGraphQl\Model\OrderItemPrices\PricesProvider">
+        <plugin name="amerimark_fixedline_order_item_prices"
+                type="Amerimark\FixedLine\Plugin\SalesGraphQl\PricesProviderPlugin"/>
+    </type>
+</config>

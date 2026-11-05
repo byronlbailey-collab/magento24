@@ -1,0 +1,46 @@
+<?php
+/**
+ * Copyright Amerimark. All rights reserved.
+ */
+
+/**
+ * Admin "configure product" popup (order creation, quote editing): a plain drop-down of the group's images, plus a
+ * file input when the option allows uploads.
+ *
+ * @var \Amerimark\ImageOption\Block\Product\View\Options\ImageGroup $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$option = $block->getOption();
+$optionId = (int)$option->getId();
+$required = (bool)$option->getIsRequire();
+$selected = $block->getSelectedImageId();
+$fileInfo = $block->getFileInfo();
+$fileName = 'options_' . $optionId . '_file';
+?>
+<div class="admin__field field<?= $required ? ' _required required' : '' ?>">
+    <label class="label admin__field-label"><span><?= $escaper->escapeHtml($option->getTitle()) ?></span></label>
+    <div class="control admin__field-control">
+        <select name="options[<?= $optionId ?>]" id="options_<?= $optionId ?>_image"
+                class="admin__control-select product-custom-option<?= $required && !$block->isUploadAllowed() ? ' required' : '' ?>">
+            <option value=""><?= $escaper->escapeHtml(__('-- Please Select --')) ?></option>
+            <?php foreach ($block->getItems() as $item): ?>
+                <option value="<?= (int)$item['item_id'] ?>"<?= (int)$item['item_id'] === $selected ? ' selected="selected"' : '' ?>>
+                    <?= $escaper->escapeHtml($item['label']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <?php if ($block->isUploadAllowed()): ?>
+            <div class="admin__field-note">
+                <?php if ($fileInfo->hasData()): ?>
+                    <?= $escaper->escapeHtml(__('Current upload')) ?>:
+                    <strong><?= $escaper->escapeHtml($fileInfo->getTitle()) ?></strong><br/>
+                <?php endif; ?>
+                <?= $escaper->escapeHtml(__('Or upload a file')) ?>
+                (<?= $escaper->escapeHtml($block->getUploadExtensions()) ?>):
+                <input type="file" name="<?= $escaper->escapeHtmlAttr($fileName) ?>" id="<?= $escaper->escapeHtmlAttr($fileName) ?>"/>
+                <input type="hidden" name="<?= $escaper->escapeHtmlAttr($fileName) ?>_action"
+                       value="<?= $fileInfo->hasData() ? 'save_old' : 'save_new' ?>"/>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

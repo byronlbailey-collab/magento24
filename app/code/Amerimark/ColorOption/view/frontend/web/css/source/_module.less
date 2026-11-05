@@ -1,0 +1,79 @@
+// Copyright Amerimark. All rights reserved.
+// Color option (Amerimark_ColorOption). Plain rules so they work in Luma and are easy to restyle.
+
+.colorswatch-option {
+    .colorswatch-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+
+    .colorswatch {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0;
+        position: relative;
+
+        // radio is visually hidden but stays focusable and visible to the validator
+        .colorswatch-input {
+            height: 1px;
+            left: 0;
+            margin: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            width: 1px;
+        }
+
+        .colorswatch-dot {
+            border: 2px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #b5b5b5;
+            display: block;
+            height: 34px;
+            transition: box-shadow .15s ease, transform .15s ease;
+            width: 34px;
+        }
+
+        &:hover .colorswatch-dot {
+            box-shadow: 0 0 0 2px #888;
+            transform: scale(1.08);
+        }
+
+        .colorswatch-input:focus-visible + .colorswatch-dot {
+            box-shadow: 0 0 0 3px #1979c3;
+        }
+
+        .colorswatch-input:checked + .colorswatch-dot {
+            box-shadow: 0 0 0 3px #333;
+        }
+    }
+
+    .colorswatch-status {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        min-height: 24px;
+    }
+
+    .colorswatch-status__text {
+        font-weight: 600;
+    }
+
+    .colorswatch-clear {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        color: #006bb4;
+        cursor: pointer;
+        padding: 0;
+        text-decoration: underline;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+}
